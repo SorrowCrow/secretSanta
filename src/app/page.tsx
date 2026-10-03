@@ -153,17 +153,17 @@ export default function HomePage() {
           <LanguageSwitch />
         </div>
 
-        {/* Big button in the middle: Styled as an authentic, charming Christmas Present! */}
+        {/* Big button in the middle: Clean, iconic, beautiful Christmas Present! */}
         <div className="my-auto py-10 w-full flex justify-center px-4">
           <a
             href="#create"
-            className="group relative inline-block rounded-3xl bg-red-600 border-4 border-red-600 hover:border-yellow-400 shadow-2xl hover:shadow-[0_20px_45px_rgba(220,38,38,0.28)] transition-all duration-200 hover:-translate-y-1.5 active:translate-y-0 cursor-pointer max-w-xl sm:max-w-2xl w-full overflow-visible"
+            className="group relative inline-flex flex-col items-center justify-center p-8 sm:p-12 md:p-14 rounded-3xl bg-red-600 border-4 border-red-600 hover:border-yellow-400 shadow-xl hover:shadow-2xl transition-all duration-200 hover:-translate-y-1.5 active:translate-y-0 cursor-pointer max-w-lg sm:max-w-xl w-full min-h-[220px] sm:min-h-[260px] overflow-visible"
           >
-            {/* Christmas Ribbon Bow Knot on Top (Lush Yellow Bow) */}
-            <div className="absolute -top-11 sm:-top-16 left-1/2 -translate-x-1/2 select-none pointer-events-none group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200 z-30">
+            {/* Christmas Ribbon Bow on Top (Lush Yellow Bow) */}
+            <div className="absolute -top-9 sm:-top-13 left-1/2 -translate-x-1/2 select-none pointer-events-none group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200 z-20">
               <svg
                 viewBox="0 0 160 100"
-                className="w-32 sm:w-44 h-auto drop-shadow-md"
+                className="w-28 sm:w-36 h-auto drop-shadow-md"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -236,38 +236,23 @@ export default function HomePage() {
               </svg>
             </div>
 
-            {/* Gift Box Lid (Distinct top section with rim) */}
-            <div className="h-10 sm:h-12 bg-red-700/80 border-b-2 border-red-800/40 rounded-t-[20px] relative overflow-hidden flex items-center justify-center">
-              {/* Vertical Ribbon crossing the lid */}
-              <div
-                aria-hidden="true"
-                className="w-12 sm:w-16 h-full bg-yellow-400 border-x-2 border-yellow-500/40 pointer-events-none"
-              />
-            </div>
+            {/* Vertical Ribbon Strap (Yellow) */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 sm:w-16 bg-yellow-400 pointer-events-none"
+            />
 
-            {/* Gift Box Main Body */}
-            <div className="relative py-7 sm:py-9 flex flex-col justify-center items-center overflow-hidden rounded-b-[20px]">
-              {/* Vertical Ribbon Strap running through main body */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 sm:w-16 bg-yellow-400 border-x-2 border-yellow-500/40 pointer-events-none"
-              />
+            {/* Horizontal Ribbon Strap (Yellow) */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-12 sm:h-16 bg-yellow-400 pointer-events-none"
+            />
 
-              {/* Horizontal Satin Ribbon Sash carrying the black title */}
-              <div
-                aria-hidden="true"
-                className="relative z-10 w-full py-4 sm:py-5 px-4 sm:px-8 bg-yellow-400 border-y-2 border-yellow-500/50 shadow-sm flex items-center justify-center"
-              >
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-center text-black select-none">
-                  {t('hero.word1')} {t('hero.word2')} {t('hero.word3')}
-                </h1>
-              </div>
-
-              {/* Box Bottom Base Rim (Flat shadow depth) */}
-              <div
-                aria-hidden="true"
-                className="h-3 bg-red-800/30 w-full absolute bottom-0 inset-x-0 pointer-events-none"
-              />
+            {/* Center Ribbon Hub with Title: 100% black text on continuous yellow ribbon */}
+            <div className="relative z-10 bg-yellow-400 px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-xs border border-yellow-500/40 max-w-full">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-center text-black select-none leading-snug">
+                {t('hero.word1')} {t('hero.word2')} {t('hero.word3')}
+              </h1>
             </div>
           </a>
         </div>
