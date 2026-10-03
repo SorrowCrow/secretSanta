@@ -127,6 +127,8 @@ export async function generateSantaPoem(
         ? `Ты — Тайный Санта. Напиши праздничное, доброе 4-строчное новогоднее стихотворение на русском языке для ${safeGiver}, в котором раскрывается, что его тайный подопечный — ${safeReceiver}.
 Строгие правила:
 - Ровно 4 строки рифмованного стихотворения на русском языке.
+- Обязательно обратись по имени к дарителю: ${safeGiver}.
+- Обязательно назови имя подопечного получателя: ${safeReceiver}.
 - Праздничное зимнее настроение, добрый ритм.
 - НЕ упоминай никаких других людей.
 - Верни ТОЛЬКО 4 строки стиха без кавычек, заголовков и пояснений.`
@@ -134,6 +136,8 @@ export async function generateSantaPoem(
 Write a festive, heartwarming 4-line rhyming Christmas poem addressed to ${safeGiver} revealing that ${safeReceiver} is their Secret Santa recipient.
 Strict rules:
 - Exactly 4 lines of rhyming poetry.
+- Must explicitly address ${safeGiver} by name.
+- Must explicitly mention ${safeReceiver} by name.
 - Holiday warmth, festive Christmas spirit, joyful rhythm.
 - Do NOT mention any other person or external details.
 - Return ONLY the 4 lines of poetry without title, quotation marks, markdown headings, or explanation.`;

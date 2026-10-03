@@ -243,7 +243,7 @@ export default function ChristmasTrees() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
+      className="hidden sm:block pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
     >
       {TREES.map((t) => (
         <div

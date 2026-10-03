@@ -68,7 +68,7 @@ export const translations: Record<Locale, Translations> = {
     // Session Page
     'session.loading': 'Loading Secret Santa workshop...',
     'session.notFound': 'Exchange Not Found',
-    'session.backHome': '← Back to Secret Santa Home',
+    'session.backHome': 'Back to Secret Santa Home',
     'session.statusOpen': 'Accepting Participants',
     'session.statusLocked': 'Draw Complete • Locked',
     'session.passwordProtected': 'Password Protected',
@@ -217,7 +217,7 @@ export const translations: Record<Locale, Translations> = {
     // Session Page
     'session.loading': 'Загрузка мастерской Санты...',
     'session.notFound': 'Комната не найдена',
-    'session.backHome': '← На главную',
+    'session.backHome': 'На главную',
     'session.statusOpen': 'Приём заявок',
     'session.statusLocked': 'Жеребьёвка проведена • Закрыто',
     'session.passwordProtected': 'Защищено паролем',
