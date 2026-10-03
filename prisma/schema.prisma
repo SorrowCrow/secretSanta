@@ -1,0 +1,55 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Session {
+  id           String        @id @default(cuid())
+  title        String
+  budget       String?
+  exchangeDate String?
+  passwordHash String?
+  adminKeyHash String
+  status       String        @default("OPEN")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  participants Participant[]
+  matches      Match[]
+}
+
+model Participant {
+  id              String   @id @default(cuid())
+  sessionId       String
+  name            String
+  surname         String
+  email           String
+  wishlist        String?
+  hobbies         String?
+  joinedAt        DateTime @default(now())
+  session         Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  giverMatches    Match[]  @relation("GiverMatches")
+  receiverMatches Match[]  @relation("ReceiverMatches")
+
+  @@index([sessionId])
+}
+
+model Match {
+  id          String       @id @default(cuid())
+  sessionId   String
+  giverId     String
+  receiverId   String
+  festivePoem String?
+  giftIdeas   String?
+  emailSentAt DateTime?
+  createdAt   DateTime     @default(now())
+  session     Session      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  giver       Participant  @relation("GiverMatches", fields: [giverId], references: [id], onDelete: Cascade)
+  receiver    Participant  @relation("ReceiverMatches", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, giverId])
+  @@index([sessionId])
+}
