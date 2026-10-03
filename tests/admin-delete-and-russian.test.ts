@@ -201,7 +201,86 @@ async function runTests() {
   await prisma.participant.deleteMany({ where: { sessionId } });
   await prisma.session.delete({ where: { id: sessionId } });
 
-  console.log('\n🎉 ALL ADMIN DELETE, RUSSIAN AND EURO TESTS PASSED!\n');
+  // ----------------------------------------------------
+  // Test 5: Simplified Participant Form & Single Name
+  // ----------------------------------------------------
+  console.log('\n--- Checking Simplified Participant Form & Single Name ---');
+
+  // Check translations
+  assert(translations.en['session.name'] === 'Your Name', 'English session.name is "Your Name"');
+  assert(translations.en['session.namePlaceholder'] === 'e.g. Alice Smith', 'English session.namePlaceholder is "e.g. Alice Smith"');
+  assert(translations.ru['session.name'] === 'Ваше имя', 'Russian session.name is "Ваше имя"');
+  assert(translations.ru['session.namePlaceholder'] === 'например, Анна Смирнова', 'Russian session.namePlaceholder is "например, Анна Смирнова"');
+
+  // Create temporary session for join test
+  const simpSessionReq = new NextRequest('http://localhost:3000/api/sessions', {
+    method: 'POST',
+    body: JSON.stringify({
+      title: 'Simplified Name Test Room',
+      budget: '20 €',
+    }),
+  });
+  const simpSessionRes = await createSessionHandler(simpSessionReq);
+  const simpSessionData = await simpSessionRes.json();
+  const simpSessionId = simpSessionData.session.id;
+
+  // Test join with only 'name' (no surname key in payload)
+  const joinSingleNameReq = new NextRequest(`http://localhost:3000/api/sessions/${simpSessionId}/join`, {
+    method: 'POST',
+    body: JSON.stringify({
+      name: 'Elena Rostova',
+      email: 'elena@example.com',
+    }),
+  });
+  const joinSingleNameRes = await joinSessionHandler(joinSingleNameReq, {
+    params: Promise.resolve({ id: simpSessionId }),
+  });
+  assert(joinSingleNameRes.status === 201, 'Join with only "name" returns HTTP 201');
+  const joinSingleNameData = await joinSingleNameRes.json();
+  assert(joinSingleNameData.name === 'Elena Rostova', 'Participant name saved correctly');
+  assert(joinSingleNameData.surname === '', 'Participant surname defaults to empty string');
+  assert(Boolean(joinSingleNameData.joinedAt), 'Response contains joinedAt date');
+
+  // Test join with empty name returns 400
+  const joinEmptyNameReq = new NextRequest(`http://localhost:3000/api/sessions/${simpSessionId}/join`, {
+    method: 'POST',
+    body: JSON.stringify({
+      name: '   ',
+      email: 'badname@example.com',
+    }),
+  });
+  const joinEmptyNameRes = await joinSessionHandler(joinEmptyNameReq, {
+    params: Promise.resolve({ id: simpSessionId }),
+  });
+  assert(joinEmptyNameRes.status === 400, 'Join with empty name returns HTTP 400');
+
+  // Verify email formatting with empty surname has no double space or trailing space
+  const singleNameEmailText = buildSecretSantaPlainText({
+    giverEmail: 'test@example.com',
+    giverName: 'Santa',
+    receiverName: 'Elena Rostova',
+    receiverSurname: '',
+    sessionTitle: 'Holiday 2026',
+    locale: 'en',
+  });
+  assert(
+    singleNameEmailText.includes('YOU ARE THE SECRET SANTA FOR: Elena Rostova\n'),
+    'Plain text email formats single name cleanly without trailing space'
+  );
+
+  // Backward compatibility formatting test
+  const formatName = (p: { name: string; surname?: string | null }) =>
+    `${p.name}${p.surname ? ` ${p.surname}` : ''}`.trim();
+
+  assert(formatName({ name: 'Alice', surname: 'Smith' }) === 'Alice Smith', 'Legacy two-part name renders "Alice Smith"');
+  assert(formatName({ name: 'Elena Rostova', surname: '' }) === 'Elena Rostova', 'New single-name renders "Elena Rostova"');
+  assert(formatName({ name: 'Elena Rostova', surname: null }) === 'Elena Rostova', 'Null surname renders "Elena Rostova"');
+
+  // Clean up simplified session test data
+  await prisma.participant.deleteMany({ where: { sessionId: simpSessionId } });
+  await prisma.session.delete({ where: { id: simpSessionId } });
+
+  console.log('\n🎉 ALL ADMIN DELETE, RUSSIAN, EURO & SIMPLIFIED FORM TESTS PASSED!\n');
 }
 
 runTests().catch((err) => {

@@ -4,7 +4,7 @@ export interface SendSecretSantaMatchEmailParams {
   giverEmail: string;
   giverName: string;
   receiverName: string;
-  receiverSurname: string;
+  receiverSurname?: string | null;
   receiverWishlist?: string | null;
   receiverHobbies?: string | null;
   sessionTitle: string;
@@ -42,7 +42,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
   } = params;
 
   const isRu = locale === 'ru';
-  const fullReceiverName = `${receiverName} ${receiverSurname}`.trim();
+  const fullReceiverName = `${receiverName} ${receiverSurname || ''}`.trim();
   const formattedPoem = festivePoem
     ? festivePoem
         .split('\n')
@@ -300,7 +300,7 @@ export function buildSecretSantaPlainText(params: SendSecretSantaMatchEmailParam
   } = params;
 
   const isRu = locale === 'ru';
-  const fullReceiverName = `${receiverName} ${receiverSurname}`.trim();
+  const fullReceiverName = `${receiverName} ${receiverSurname || ''}`.trim();
 
   let text = isRu
     ? `🎅 ИТОГИ ЖЕРЕБЬЁВКИ ТАЙНОГО САНТЫ: ${sessionTitle}\n\nХо-хо-хо, ${giverName}!\n\n🎁 ВЫ ТАЙНЫЙ САНТА ДЛЯ: ${fullReceiverName}\n\n`
@@ -398,7 +398,7 @@ function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject
   } = params;
 
   const isRu = locale === 'ru';
-  const fullReceiverName = `${receiverName} ${receiverSurname}`.trim();
+  const fullReceiverName = `${receiverName} ${receiverSurname || ''}`.trim();
   const width = 74;
   const innerWidth = width - 4; // 70
 

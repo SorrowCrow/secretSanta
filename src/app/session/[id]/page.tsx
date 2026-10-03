@@ -63,7 +63,6 @@ export default function SessionPage({
 
   // Join form state
   const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [wishlist, setWishlist] = useState('');
   const [hobbies, setHobbies] = useState('');
@@ -156,8 +155,8 @@ export default function SessionPage({
     setJoinError(null);
     setJoinSuccess(null);
 
-    if (!name.trim() || !surname.trim() || !email.trim()) {
-      setJoinError('Name, surname, and email are required');
+    if (!name.trim() || !email.trim()) {
+      setJoinError('Name and email are required');
       return;
     }
 
@@ -168,7 +167,7 @@ export default function SessionPage({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: name.trim(),
-          surname: surname.trim(),
+          surname: '',
           email: email.trim().toLowerCase(),
           wishlist: wishlist.trim() || undefined,
           hobbies: hobbies.trim() || undefined,
@@ -184,7 +183,6 @@ export default function SessionPage({
 
       // Clear input fields
       setName('');
-      setSurname('');
       setEmail('');
       setWishlist('');
       setHobbies('');
@@ -600,34 +598,18 @@ export default function SessionPage({
             )}
 
             <form onSubmit={handleJoin} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    {t('session.firstName')} <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder={t('session.firstNamePlaceholder')}
-                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    {t('session.lastName')} <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                    placeholder={t('session.lastNamePlaceholder')}
-                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  {t('session.name')} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={t('session.namePlaceholder')}
+                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
+                />
               </div>
 
               <div>
@@ -802,7 +784,7 @@ export default function SessionPage({
                     </div>
                     <div>
                       <p className="font-bold text-slate-900 text-sm">
-                        {p.name} {p.surname}
+                        {`${p.name}${p.surname ? ` ${p.surname}` : ''}`.trim()}
                       </p>
                       <p className="text-[10px] text-slate-500 flex items-center space-x-1">
                         <Clock className="w-3 h-3 text-slate-400" />
@@ -822,7 +804,12 @@ export default function SessionPage({
                     {!isLocked && (
                       <button
                         type="button"
-                        onClick={() => handleDeleteParticipant(p.id, `${p.name} ${p.surname}`)}
+                        onClick={() =>
+                          handleDeleteParticipant(
+                            p.id,
+                            `${p.name}${p.surname ? ` ${p.surname}` : ''}`.trim()
+                          )
+                        }
                         title={t('session.removeParticipant')}
                         className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
                       >

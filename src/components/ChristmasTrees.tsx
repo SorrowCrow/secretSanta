@@ -241,26 +241,50 @@ export default function ChristmasTrees() {
   const base = getBasePath();
 
   return (
-    <div
-      aria-hidden="true"
-      className="hidden sm:block pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
-    >
-      {TREES.map((t) => (
-        <div
-          key={t.id}
-          className={`absolute ${t.width} ${t.opacity} ${t.flip ? 'scale-x-[-1]' : ''} ${t.hideOnMobile ? 'max-sm:hidden' : ''}`}
-          style={{
-            top: t.top,
-            ...(t.side === 'left' ? { left: t.offset } : { right: t.offset }),
-          }}
-        >
+    <>
+      {/* Mobile screens (< 640px): Clean, lightweight non-mashing arrangement at bottom corners */}
+      <div
+        aria-hidden="true"
+        className="block sm:hidden pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
+      >
+        <div className="absolute bottom-1 -left-2 w-20 opacity-[0.09] scale-x-[-1]">
           <img
-            src={`${base}/${t.svg}`}
+            src={`${base}/tree-bottom-right.svg`}
             alt=""
             className="w-full h-auto select-none pointer-events-none"
           />
         </div>
-      ))}
-    </div>
+        <div className="absolute bottom-1 -right-2 w-20 opacity-[0.09]">
+          <img
+            src={`${base}/tree-bottom-right.svg`}
+            alt=""
+            className="w-full h-auto select-none pointer-events-none"
+          />
+        </div>
+      </div>
+
+      {/* Larger screens (>= 640px): Rich forest clusters */}
+      <div
+        aria-hidden="true"
+        className="hidden sm:block pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
+      >
+        {TREES.map((t) => (
+          <div
+            key={t.id}
+            className={`absolute ${t.width} ${t.opacity} ${t.flip ? 'scale-x-[-1]' : ''}`}
+            style={{
+              top: t.top,
+              ...(t.side === 'left' ? { left: t.offset } : { right: t.offset }),
+            }}
+          >
+            <img
+              src={`${base}/${t.svg}`}
+              alt=""
+              className="w-full h-auto select-none pointer-events-none"
+            />
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

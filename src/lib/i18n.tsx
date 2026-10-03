@@ -90,6 +90,8 @@ export const translations: Record<Locale, Translations> = {
     // Join Form
     'session.joinTitle': 'Join This Secret Santa',
     'session.joinDesc': 'Fill in your details below to participate in the draw',
+    'session.name': 'Your Name',
+    'session.namePlaceholder': 'e.g. Alice Smith',
     'session.firstName': 'First Name',
     'session.firstNamePlaceholder': 'e.g. Alice',
     'session.lastName': 'Last Name',
@@ -241,6 +243,8 @@ export const translations: Record<Locale, Translations> = {
     // Join Form
     'session.joinTitle': 'Присоединиться к Тайному Санте',
     'session.joinDesc': 'Заполните форму ниже для участия в жеребьёвке',
+    'session.name': 'Ваше имя',
+    'session.namePlaceholder': 'например, Анна Смирнова',
     'session.firstName': 'Имя',
     'session.firstNamePlaceholder': 'например, Анна',
     'session.lastName': 'Фамилия',

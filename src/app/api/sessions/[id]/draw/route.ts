@@ -77,10 +77,11 @@ export async function POST(
     // Concurrently process poems, AI gifts, email dispatches, and match record persistence
     await Promise.all(
       pairs.map(async ({ giver, receiver }) => {
+        const fullReceiverName = `${receiver.name} ${receiver.surname || ''}`.trim();
         const [festivePoem, giftIdeas] = await Promise.all([
-          generateSantaPoem(giver.name, receiver.name, safeLocale),
+          generateSantaPoem(giver.name, fullReceiverName, safeLocale),
           generateGiftIdeas(
-            receiver.name,
+            fullReceiverName,
             receiver.wishlist,
             receiver.hobbies,
             session.budget,

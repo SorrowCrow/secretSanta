@@ -33,14 +33,7 @@ export async function POST(
 
     if (!name || typeof name !== 'string' || !name.trim()) {
       return NextResponse.json(
-        { success: false, error: 'First name is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!surname || typeof surname !== 'string' || !surname.trim()) {
-      return NextResponse.json(
-        { success: false, error: 'Last name is required' },
+        { success: false, error: 'Name is required' },
         { status: 400 }
       );
     }
@@ -77,11 +70,13 @@ export async function POST(
       );
     }
 
+    const sanitizedSurname = typeof surname === 'string' ? surname.trim() : '';
+
     const participant = await prisma.participant.create({
       data: {
         sessionId: id,
         name: name.trim(),
-        surname: surname.trim(),
+        surname: sanitizedSurname,
         email: normalizedEmail,
         wishlist:
           typeof wishlist === 'string' && wishlist.trim() ? wishlist.trim() : null,
@@ -96,6 +91,7 @@ export async function POST(
         id: participant.id,
         name: participant.name,
         surname: participant.surname,
+        joinedAt: participant.joinedAt,
       },
       { status: 201 }
     );
