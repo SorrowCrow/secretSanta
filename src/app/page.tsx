@@ -145,18 +145,12 @@ export default function HomePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
-      {/* Hero Section: Centered vertically and horizontally, each word on a new line */}
-      <section className="min-h-[50vh] sm:min-h-[55vh] flex flex-col items-center justify-center text-center px-4 mb-16 relative">
-        <h1 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight leading-none text-center select-none">
-          <span className="block text-blue-600 mb-1 sm:mb-2">
-            {t('hero.word1')}
-          </span>
-          <span className="block text-red-600 mb-1 sm:mb-2">
-            {t('hero.word2')}
-          </span>
-          <span className="block text-emerald-600">
-            {t('hero.word3')}
-          </span>
+      {/* Hero Section: Single-line title with smaller font */}
+      <section className="text-center px-4 py-6 sm:py-10 mb-8 relative">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-center select-none text-slate-900 flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-4 gap-y-1">
+          <span className="text-blue-600">{t('hero.word1')}</span>
+          <span className="text-red-600">{t('hero.word2')}</span>
+          <span className="text-emerald-600">{t('hero.word3')}</span>
         </h1>
 
         <div className="flex flex-wrap items-center justify-center gap-4 mt-10">

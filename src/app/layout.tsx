@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Snowfall from '@/components/Snowfall';
+import ChristmasTrees from '@/components/ChristmasTrees';
 import Footer from '@/components/Footer';
 import LanguageSwitch from '@/components/LanguageSwitch';
 import Providers from '@/components/Providers';
@@ -29,7 +30,10 @@ export default function RootLayout({
           {/* Subtle Falling Snowflakes */}
           <Snowfall />
 
-          {/* Top Center Language Switcher (No Top Bar) */}
+          {/* Low-transparency Side Christmas Trees */}
+          <ChristmasTrees />
+
+          {/* Top Center Language Switcher */}
           <LanguageSwitch />
 
           {/* Main Content Area */}
