@@ -363,12 +363,6 @@ export default function SessionPage({
             {session.title}
           </h2>
 
-          {/* Room ID Badge with safe truncation */}
-          <div className="mt-2 mb-4 inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-mono max-w-full min-w-0">
-            <span className="text-slate-400 font-sans font-semibold flex-shrink-0">ID:</span>
-            <span className="truncate max-w-[200px] sm:max-w-[260px]">{session.id || sessionId}</span>
-          </div>
-
           <p className="text-xs text-blue-700 font-bold uppercase tracking-wider mb-4">
             🔒 {t('session.passwordProtected')}
           </p>
@@ -517,43 +511,39 @@ export default function SessionPage({
           </div>
         </div>
 
-        {/* Shareable Link Bar */}
-        <div className="mt-6 pt-5 border-t border-slate-100 min-w-0">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 min-w-0">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center space-x-1 flex-shrink-0">
-              <Gift className="w-3.5 h-3.5 text-red-600" />
-              <span>{t('session.shareBarLabel')}</span>
-            </span>
-            <div className="flex-1 flex items-center space-x-2 min-w-0">
-              <input
-                type="text"
-                readOnly
-                value={
-                  typeof window !== 'undefined'
-                    ? `${window.location.origin}${getBasePath()}/session/${sessionId}`
-                    : `/session/${sessionId}`
-                }
-                className="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-800 font-mono truncate"
-              />
-              <button
-                type="button"
-                onClick={copyShareLink}
-                className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center space-x-1.5 transition flex-shrink-0"
-              >
-                {copiedLink ? (
-                  <>
-                    <Check className="w-4 h-4 text-emerald-400" />
-                    <span>{t('session.copied')}</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-4 h-4" />
-                    <span>{t('session.copyLink')}</span>
-                  </>
-                )}
-              </button>
+        {/* Shareable Invite Action (no raw ID or overflowing text input) */}
+        <div className="mt-6 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 min-w-0">
+          <div className="flex items-center space-x-2.5 min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center flex-shrink-0">
+              <Gift className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+                {t('session.shareBarLabel')}
+              </p>
+              <p className="text-xs text-slate-500 truncate">
+                {locale === 'ru' ? 'Скопируйте ссылку и отправьте участникам' : 'Copy link and share with participants to join'}
+              </p>
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={copyShareLink}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 transition active:scale-95 shadow-xs flex-shrink-0 cursor-pointer"
+          >
+            {copiedLink ? (
+              <>
+                <Check className="w-4 h-4 text-emerald-400" />
+                <span>{t('session.copied')}</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4 text-slate-300" />
+                <span>{t('session.copyLink')}</span>
+              </>
+            )}
+          </button>
         </div>
       </section>
 

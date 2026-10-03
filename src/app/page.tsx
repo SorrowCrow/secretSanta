@@ -602,38 +602,30 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-4 mb-6 min-w-0">
-              {/* Shareable Link Box */}
+              {/* Shareable Link Action */}
               <div className="min-w-0">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
                   {t('createdModal.step1')}
                 </label>
-                <div className="flex items-center space-x-2 min-w-0">
-                  <input
-                    type="text"
-                    readOnly
-                    value={getSessionShareUrl(createdSession.id)}
-                    className="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-800 font-mono truncate"
-                  />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      copyToClipboard(getSessionShareUrl(createdSession.id), 'link')
-                    }
-                    className="flex-shrink-0 px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition cursor-pointer"
-                  >
-                    {copiedLink ? (
-                      <>
-                        <Check className="w-4 h-4 text-emerald-400 inline mr-1" />
-                        <span>{t('createdModal.copied')}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4 inline mr-1" />
-                        <span>{t('createdModal.copy')}</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    copyToClipboard(getSessionShareUrl(createdSession.id), 'link')
+                  }
+                  className="w-full py-3.5 px-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm flex items-center justify-center space-x-2 transition active:scale-[0.99] shadow-xs cursor-pointer"
+                >
+                  {copiedLink ? (
+                    <>
+                      <Check className="w-4 h-4 text-emerald-400" />
+                      <span>{t('createdModal.copied')}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4 text-slate-300" />
+                      <span>{t('createdModal.copy')}</span>
+                    </>
+                  )}
+                </button>
               </div>
 
               {/* Admin Key Warning Box */}
