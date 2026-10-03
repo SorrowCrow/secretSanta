@@ -153,46 +153,88 @@ export default function HomePage() {
           <LanguageSwitch />
         </div>
 
-        {/* Big button in the middle: Styled as a festive Christmas Present! */}
+        {/* Big button in the middle: Styled as a red Christmas Present with yellow ribbons! */}
         <div className="my-auto py-10 w-full flex justify-center px-4">
           <a
             href="#create"
-            className="group relative inline-block p-8 sm:p-12 md:p-14 rounded-3xl bg-white hover:bg-red-50/20 border-4 border-red-600 hover:border-red-700 shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer max-w-3xl w-full"
+            className="group relative inline-block p-10 sm:p-14 md:p-16 rounded-3xl bg-red-600 border-4 border-red-600 hover:border-yellow-400 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer max-w-3xl w-full overflow-visible"
           >
-            {/* Christmas Ribbon Bow Knot on Top */}
-            <div className="absolute -top-7 sm:-top-9 left-1/2 -translate-x-1/2 text-4xl sm:text-6xl select-none pointer-events-none group-hover:scale-110 transition-transform filter drop-shadow-sm">
-              🎀
+            {/* Christmas Ribbon Bow Knot on Top (Yellow) */}
+            <div className="absolute -top-8 sm:-top-11 left-1/2 -translate-x-1/2 select-none pointer-events-none group-hover:scale-110 transition-transform z-20">
+              <svg
+                viewBox="0 0 100 60"
+                className="w-20 sm:w-28 h-auto drop-shadow-md"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Left Loop */}
+                <path
+                  d="M50 30 C30 10, 5 15, 10 32 C15 48, 38 38, 50 32"
+                  fill="#FACC15"
+                  stroke="#CA8A04"
+                  strokeWidth="2.5"
+                />
+                <path
+                  d="M45 28 C32 18, 16 22, 18 32 C20 40, 36 34, 45 30"
+                  fill="#EAB308"
+                  opacity="0.4"
+                />
+                {/* Right Loop */}
+                <path
+                  d="M50 30 C70 10, 95 15, 90 32 C85 48, 62 38, 50 32"
+                  fill="#FACC15"
+                  stroke="#CA8A04"
+                  strokeWidth="2.5"
+                />
+                <path
+                  d="M55 28 C68 18, 84 22, 82 32 C80 40, 64 34, 55 30"
+                  fill="#EAB308"
+                  opacity="0.4"
+                />
+                {/* Left Ribbon Tail */}
+                <path
+                  d="M44 32 C38 42, 28 50, 22 56 L32 54 L38 58 C42 48, 46 38, 48 32 Z"
+                  fill="#FACC15"
+                  stroke="#CA8A04"
+                  strokeWidth="2"
+                />
+                {/* Right Ribbon Tail */}
+                <path
+                  d="M56 32 C62 42, 72 50, 78 56 L68 54 L62 58 C58 48, 54 38, 52 32 Z"
+                  fill="#FACC15"
+                  stroke="#CA8A04"
+                  strokeWidth="2"
+                />
+                {/* Center Knot */}
+                <ellipse
+                  cx="50"
+                  cy="31"
+                  rx="9"
+                  ry="8"
+                  fill="#FDE047"
+                  stroke="#CA8A04"
+                  strokeWidth="2.5"
+                />
+              </svg>
             </div>
 
-            {/* Vertical Ribbon Band */}
+            {/* Vertical Ribbon Strap (Yellow) */}
             <div
               aria-hidden="true"
-              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 sm:w-12 bg-red-600/10 border-x-2 border-red-600/25 pointer-events-none"
+              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-10 sm:w-14 bg-yellow-400 pointer-events-none"
             />
 
-            {/* Horizontal Ribbon Band */}
+            {/* Horizontal Ribbon Strap (Yellow) */}
             <div
               aria-hidden="true"
-              className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-8 sm:h-12 bg-red-600/10 border-y-2 border-red-600/25 pointer-events-none"
+              className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-10 sm:h-14 bg-yellow-400 pointer-events-none"
             />
 
-            {/* Gift Tag in top corner */}
-            <div className="absolute -top-3 right-6 sm:right-10 bg-amber-400 text-amber-950 text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs border border-amber-500">
-              🏷️ {t('hero.word3')}
-            </div>
-
-            {/* Content inside the present: Single-line title with smaller font */}
+            {/* Content inside the present: Single-line title in black */}
             <div className="relative z-10 flex flex-col items-center justify-center">
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-center select-none flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-                <span className="text-blue-600 group-hover:text-blue-700 transition-colors">{t('hero.word1')}</span>{' '}
-                <span className="text-red-600 group-hover:text-red-700 transition-colors">{t('hero.word2')}</span>{' '}
-                <span className="text-emerald-600 group-hover:text-emerald-700 transition-colors">{t('hero.word3')}</span>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-center text-black select-none">
+                {t('hero.word1')} {t('hero.word2')} {t('hero.word3')}
               </h1>
-
-              <span className="inline-flex items-center space-x-1.5 mt-4 text-xs sm:text-sm font-bold text-red-600 group-hover:text-red-700 transition-colors">
-                <span>{t('hero.unwrapHint')}</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </span>
             </div>
           </a>
         </div>
