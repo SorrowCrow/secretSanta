@@ -224,7 +224,7 @@ export default function SessionPage({
           particleCount: 160,
           spread: 100,
           origin: { y: 0.5 },
-          colors: ['#ef4444', '#10b981', '#fbbf24', '#f8fafc'],
+          colors: ['#dc2626', '#16a34a', '#2563eb', '#f59e0b'],
         });
       } catch {
         // fallback
@@ -260,10 +260,10 @@ export default function SessionPage({
   if (loading && !session) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center">
-        <div className="w-16 h-16 rounded-full bg-red-950 border border-red-800 flex items-center justify-center mx-auto mb-4 animate-spin">
-          <Gift className="w-8 h-8 text-amber-300" />
+        <div className="w-16 h-16 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mx-auto mb-4 text-red-600 animate-spin">
+          <Gift className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-bold text-white">{t('session.loading')}</h2>
+        <h2 className="text-xl font-bold text-slate-900">{t('session.loading')}</h2>
       </div>
     );
   }
@@ -272,16 +272,16 @@ export default function SessionPage({
   if (fetchError || !session) {
     return (
       <div className="max-w-md mx-auto px-4 py-24 text-center">
-        <div className="w-16 h-16 rounded-full bg-red-950 border border-red-700 flex items-center justify-center mx-auto mb-4 text-red-400">
+        <div className="w-16 h-16 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mx-auto mb-4 text-red-600">
           <AlertCircle className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">{t('session.notFound')}</h2>
-        <p className="text-sm text-slate-300 mb-6">
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('session.notFound')}</h2>
+        <p className="text-sm text-slate-600 mb-6">
           {fetchError || 'This Secret Santa room does not exist.'}
         </p>
         <Link
           href="/"
-          className="inline-flex items-center space-x-2 bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2.5 rounded-xl shadow transition hover:scale-105"
+          className="inline-flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-2xl shadow-sm transition"
         >
           <span>{t('session.backHome')}</span>
         </Link>
@@ -293,23 +293,23 @@ export default function SessionPage({
   if (session.isPasswordProtected && !session.isUnlocked) {
     return (
       <div className="max-w-md mx-auto px-4 py-16 animate-fadeIn">
-        <div className="glass-panel-gold rounded-2xl p-6 sm:p-8 shadow-2xl border border-amber-500/30 text-center">
-          <div className="w-16 h-16 rounded-full bg-amber-950 border border-amber-700 flex items-center justify-center mx-auto mb-4 text-amber-300">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center mx-auto mb-4 text-blue-600">
             <Lock className="w-8 h-8" />
           </div>
 
-          <h2 className="text-2xl font-black text-white mb-1">{session.title}</h2>
-          <p className="text-xs text-amber-300 font-medium uppercase tracking-wider mb-6">
+          <h2 className="text-2xl font-black text-slate-900 mb-1">{session.title}</h2>
+          <p className="text-xs text-blue-700 font-bold uppercase tracking-wider mb-6">
             🔒 {t('session.passwordProtected')}
           </p>
 
-          <p className="text-xs sm:text-sm text-slate-300 mb-6">
+          <p className="text-xs sm:text-sm text-slate-600 mb-6">
             {t('session.gateDesc')}
           </p>
 
           {unlockError && (
-            <div className="mb-5 p-3 rounded-xl bg-red-950 border border-red-800 text-red-200 text-xs flex items-center justify-center space-x-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400" />
+            <div className="mb-5 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center justify-center space-x-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-600" />
               <span>{unlockError}</span>
             </div>
           )}
@@ -322,13 +322,13 @@ export default function SessionPage({
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
               placeholder={t('session.gatePlaceholder')}
-              className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-center text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 font-medium"
+              className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-center text-sm focus:outline-none focus:border-blue-600 font-medium"
             />
 
             <button
               type="submit"
               disabled={isUnlocking}
-              className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2 disabled:opacity-50"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-5 rounded-2xl shadow-sm transition active:scale-[0.99] flex items-center justify-center space-x-2 disabled:opacity-50"
             >
               {isUnlocking ? (
                 <span>{t('session.gateCheckingBtn')}</span>
@@ -341,8 +341,8 @@ export default function SessionPage({
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-white/10">
-            <Link href="/" className="text-xs text-slate-400 hover:text-white transition">
+          <div className="mt-6 pt-4 border-t border-slate-100">
+            <Link href="/" className="text-xs font-bold text-slate-500 hover:text-slate-800 transition">
               {t('session.backHome')}
             </Link>
           </div>
@@ -356,54 +356,54 @@ export default function SessionPage({
   const participantCount = session.participantCount ?? participants.length;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-8">
       {/* Session Header Card */}
-      <section className="glass-panel rounded-2xl p-6 sm:p-8 border border-white/10 shadow-2xl relative overflow-hidden">
+      <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             <div className="flex flex-wrap items-center gap-2">
               <span
-                className={`inline-flex items-center space-x-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${
+                className={`inline-flex items-center space-x-1.5 text-xs font-bold px-3 py-1 rounded-full ${
                   isLocked
-                    ? 'bg-amber-950 text-amber-300 border border-amber-800'
-                    : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+                    ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                    : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
                 }`}
               >
                 <span
                   className={`w-2 h-2 rounded-full ${
-                    isLocked ? 'bg-amber-400' : 'bg-emerald-400 animate-pulse'
+                    isLocked ? 'bg-amber-600' : 'bg-emerald-600 animate-pulse'
                   }`}
                 />
                 <span>{isLocked ? t('session.statusLocked') : t('session.statusOpen')}</span>
               </span>
 
               {session.isPasswordProtected && (
-                <span className="inline-flex items-center space-x-1 text-xs font-medium px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                  <Lock className="w-3 h-3 text-amber-400" />
+                <span className="inline-flex items-center space-x-1 text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                  <Lock className="w-3 h-3 text-blue-600" />
                   <span>{t('session.passwordProtected')}</span>
                 </span>
               )}
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               {session.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-300 pt-1">
+            <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-700 pt-1">
               {session.budget && (
-                <div className="flex items-center space-x-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-white/5">
-                  <DollarSign className="w-4 h-4 text-amber-400" />
-                  <span>{t('session.budget')} <strong className="text-white">{session.budget}</strong></span>
+                <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                  <DollarSign className="w-4 h-4 text-blue-600" />
+                  <span>{t('session.budget')} <strong className="text-slate-900">{session.budget}</strong></span>
                 </div>
               )}
               {session.exchangeDate && (
-                <div className="flex items-center space-x-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-white/5">
-                  <Calendar className="w-4 h-4 text-emerald-400" />
-                  <span>{t('session.exchangeDate')} <strong className="text-white">{session.exchangeDate}</strong></span>
+                <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  <span>{t('session.exchangeDate')} <strong className="text-slate-900">{session.exchangeDate}</strong></span>
                 </div>
               )}
-              <div className="flex items-center space-x-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-white/5">
-                <Users className="w-4 h-4 text-blue-400" />
+              <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                <Users className="w-4 h-4 text-red-600" />
                 <span>
                   {participantCount === 1
                     ? t('session.oneElfJoined')
@@ -417,15 +417,15 @@ export default function SessionPage({
           <div className="flex sm:flex-col items-center sm:items-end gap-2">
             <button
               onClick={() => setShowHostModal(true)}
-              className="inline-flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl border border-white/10 transition shadow-sm"
+              className="inline-flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition shadow-xs"
             >
-              <Key className="w-3.5 h-3.5 text-amber-400" />
+              <Key className="w-3.5 h-3.5 text-amber-300" />
               <span>{t('session.hostControls')}</span>
             </button>
             <button
               onClick={fetchSession}
               title={t('session.refresh')}
-              className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-white/5 transition"
+              className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-200 transition"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -433,10 +433,10 @@ export default function SessionPage({
         </div>
 
         {/* Shareable Link Bar */}
-        <div className="mt-6 pt-5 border-t border-white/10">
+        <div className="mt-6 pt-5 border-t border-slate-100">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center space-x-1 flex-shrink-0">
-              <Gift className="w-3.5 h-3.5 text-amber-400" />
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center space-x-1 flex-shrink-0">
+              <Gift className="w-3.5 h-3.5 text-red-600" />
               <span>{t('session.shareBarLabel')}</span>
             </span>
             <div className="flex-1 flex items-center space-x-2">
@@ -448,21 +448,21 @@ export default function SessionPage({
                     ? `${window.location.origin}${getBasePath()}/session/${sessionId}`
                     : `/session/${sessionId}`
                 }
-                className="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-slate-300 font-mono truncate"
+                className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-800 font-mono truncate"
               />
               <button
                 type="button"
                 onClick={copyShareLink}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-white/10 flex items-center space-x-1.5 transition flex-shrink-0"
+                className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center space-x-1.5 transition flex-shrink-0"
               >
                 {copiedLink ? (
                   <>
                     <Check className="w-4 h-4 text-emerald-400" />
-                    <span className="text-emerald-400">{t('session.copied')}</span>
+                    <span>{t('session.copied')}</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4 text-slate-300" />
+                    <Copy className="w-4 h-4" />
                     <span>{t('session.copyLink')}</span>
                   </>
                 )}
@@ -474,16 +474,16 @@ export default function SessionPage({
 
       {/* Draw Complete Locked Banner (if LOCKED) */}
       {isLocked && (
-        <section className="glass-panel-gold rounded-2xl p-6 sm:p-8 border border-amber-500/40 shadow-xl relative overflow-hidden animate-fadeIn">
+        <section className="bg-red-50 rounded-3xl p-6 sm:p-8 border-2 border-red-200 shadow-sm relative overflow-hidden animate-fadeIn">
           <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
-            <div className="w-16 h-16 rounded-2xl bg-amber-950 border border-amber-700 flex items-center justify-center text-3xl flex-shrink-0">
+            <div className="w-16 h-16 rounded-2xl bg-white border border-red-200 flex items-center justify-center text-3xl flex-shrink-0 shadow-xs">
               🎄
             </div>
             <div className="flex-1">
-              <h2 className="text-xl sm:text-2xl font-black text-white">
+              <h2 className="text-xl sm:text-2xl font-black text-red-900">
                 {t('session.lockedBannerTitle')}
               </h2>
-              <p className="text-xs sm:text-sm text-amber-200 mt-1 leading-relaxed">
+              <p className="text-xs sm:text-sm text-red-800 mt-1 leading-relaxed">
                 {t('session.lockedBannerDesc')}
               </p>
             </div>
@@ -495,29 +495,29 @@ export default function SessionPage({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Sign-up Form (If OPEN) */}
         {!isLocked ? (
-          <section className="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-7 border border-white/10 shadow-xl">
-            <div className="flex items-center space-x-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-red-950 border border-red-800 flex items-center justify-center text-red-400">
+          <section className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
                 <Gift className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">{t('session.joinTitle')}</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900">{t('session.joinTitle')}</h2>
+                <p className="text-xs sm:text-sm text-slate-500">
                   {t('session.joinDesc')}
                 </p>
               </div>
             </div>
 
             {joinError && (
-              <div className="mb-5 p-3.5 rounded-xl bg-red-950 border border-red-800 text-red-200 text-xs flex items-start space-x-2">
-                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="mb-5 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start space-x-2">
+                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
                 <span>{joinError}</span>
               </div>
             )}
 
             {joinSuccess && (
-              <div className="mb-5 p-4 rounded-xl bg-emerald-950 border border-emerald-800 text-emerald-200 text-xs sm:text-sm flex items-start space-x-2.5">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+              <div className="mb-5 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-start space-x-2.5">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
                 <span>{joinSuccess}</span>
               </div>
             )}
@@ -525,8 +525,8 @@ export default function SessionPage({
             <form onSubmit={handleJoin} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                    {t('session.firstName')} <span className="text-red-400">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    {t('session.firstName')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -534,13 +534,13 @@ export default function SessionPage({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={t('session.firstNamePlaceholder')}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                    {t('session.lastName')} <span className="text-red-400">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    {t('session.lastName')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -548,16 +548,16 @@ export default function SessionPage({
                     value={surname}
                     onChange={(e) => setSurname(e.target.value)}
                     placeholder={t('session.lastNamePlaceholder')}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center justify-between">
-                  <span>{t('session.email')} <span className="text-red-400">*</span></span>
-                  <span className="text-[10px] text-emerald-400 flex items-center space-x-1">
-                    <ShieldCheck className="w-3 h-3" />
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center justify-between">
+                  <span>{t('session.email')} <span className="text-red-500">*</span></span>
+                  <span className="text-[10px] text-emerald-700 font-bold flex items-center space-x-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                     <span>{t('session.emailPrivacyBadge')}</span>
                   </span>
                 </label>
@@ -567,18 +567,18 @@ export default function SessionPage({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={t('session.emailPlaceholder')}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-500 mt-1">
                   {t('session.emailPrivacyHint')}
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center justify-between">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center justify-between">
                   <span>{t('session.wishlist')}</span>
-                  <span className="text-[10px] text-amber-300 flex items-center space-x-1">
-                    <Sparkles className="w-3 h-3" />
+                  <span className="text-[10px] text-blue-700 font-bold flex items-center space-x-1">
+                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                     <span>{t('session.wishlistAiBadge')}</span>
                   </span>
                 </label>
@@ -587,12 +587,12 @@ export default function SessionPage({
                   value={wishlist}
                   onChange={(e) => setWishlist(e.target.value)}
                   placeholder={t('session.wishlistPlaceholder')}
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500 resize-none"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600 resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                   {t('session.hobbies')}
                 </label>
                 <input
@@ -600,9 +600,9 @@ export default function SessionPage({
                   value={hobbies}
                   onChange={(e) => setHobbies(e.target.value)}
                   placeholder={t('session.hobbiesPlaceholder')}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-500 mt-1">
                   {t('session.hobbiesHint')}
                 </p>
               </div>
@@ -610,7 +610,7 @@ export default function SessionPage({
               <button
                 type="submit"
                 disabled={isJoining}
-                className="w-full mt-2 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-red-950/50 border border-red-500 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+                className="w-full mt-2 bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-2xl shadow-sm flex items-center justify-center space-x-2 transition active:scale-[0.99] disabled:opacity-50 text-base"
               >
                 {isJoining ? (
                   <div className="flex items-center space-x-2">
@@ -627,27 +627,27 @@ export default function SessionPage({
             </form>
           </section>
         ) : (
-          <section className="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-7 border border-white/10 shadow-xl space-y-4">
-            <h3 className="font-bold text-lg text-white flex items-center space-x-2">
-              <Gift className="w-5 h-5 text-amber-400" />
+          <section className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+            <h3 className="font-bold text-lg text-slate-900 flex items-center space-x-2">
+              <Gift className="w-5 h-5 text-red-600" />
               <span>{t('session.summaryTitle')}</span>
             </h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               {t('session.summaryDesc', { count: participantCount })}
             </p>
-            <div className="p-4 rounded-xl bg-slate-900 border border-white/5 space-y-2 text-xs text-slate-300">
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-slate-400">{t('session.totalPairs')}</span>
-                <span className="font-bold text-white">{participantCount}</span>
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs text-slate-700">
+              <div className="flex justify-between py-1 border-b border-slate-200">
+                <span className="text-slate-500">{t('session.totalPairs')}</span>
+                <span className="font-bold text-slate-900">{participantCount}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-slate-400">{t('session.matchingMode')}</span>
-                <span className="font-medium text-emerald-400">{t('session.matchingModeVal')}</span>
+              <div className="flex justify-between py-1 border-b border-slate-200">
+                <span className="text-slate-500">{t('session.matchingMode')}</span>
+                <span className="font-bold text-emerald-700">{t('session.matchingModeVal')}</span>
               </div>
               {session.exchangeDate && (
                 <div className="flex justify-between py-1">
-                  <span className="text-slate-400">{t('session.exchangeDay')}</span>
-                  <span className="font-bold text-amber-300">{session.exchangeDate}</span>
+                  <span className="text-slate-500">{t('session.exchangeDay')}</span>
+                  <span className="font-bold text-blue-700">{session.exchangeDate}</span>
                 </div>
               )}
             </div>
@@ -655,28 +655,28 @@ export default function SessionPage({
         )}
 
         {/* Right Column: Safe Participant Roster */}
-        <section className="lg:col-span-5 glass-panel rounded-2xl p-6 sm:p-7 border border-white/10 shadow-xl">
-          <div className="flex items-center justify-between mb-5">
+        <section className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <Users className="w-5 h-5 text-emerald-400" />
-              <h2 className="text-xl font-bold text-white">{t('session.rosterTitle')}</h2>
+              <Users className="w-5 h-5 text-emerald-600" />
+              <h2 className="text-xl font-bold text-slate-900">{t('session.rosterTitle')}</h2>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800">
+            <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
               {participantCount === 1 ? t('session.oneElfJoined') : t('session.elvesJoined', { count: participantCount })}
             </span>
           </div>
 
-          <p className="text-xs text-slate-400 mb-4">
+          <p className="text-xs text-slate-500 mb-4">
             {t('session.rosterSubtitle')}
           </p>
 
-          <div className="space-y-2 max-h-[460px] overflow-y-auto pr-1">
+          <div className="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
             {participants.length === 0 ? (
-              <div className="text-center py-10 px-4 rounded-xl bg-slate-900/60 border border-dashed border-slate-800">
-                <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center mx-auto mb-2 text-slate-400">
+              <div className="text-center py-10 px-4 rounded-2xl bg-slate-50 border border-dashed border-slate-200">
+                <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center mx-auto mb-2 text-slate-500">
                   🎅
                 </div>
-                <p className="text-xs text-slate-300">
+                <p className="text-xs text-slate-500">
                   {t('session.emptyRoster')}
                 </p>
               </div>
@@ -684,17 +684,17 @@ export default function SessionPage({
               participants.map((p, idx) => (
                 <div
                   key={p.id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-white/5 hover:border-white/10 transition"
+                  className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400 text-xs font-bold">
+                    <div className="w-8 h-8 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-800 text-xs font-bold">
                       {idx + 1}
                     </div>
                     <div>
-                      <p className="font-semibold text-white text-sm">
+                      <p className="font-bold text-slate-900 text-sm">
                         {p.name} {p.surname}
                       </p>
-                      <p className="text-[10px] text-slate-400 flex items-center space-x-1">
+                      <p className="text-[10px] text-slate-500 flex items-center space-x-1">
                         <Clock className="w-3 h-3 text-slate-400" />
                         <span>
                           {new Date(p.joinedAt).toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', {
@@ -705,14 +705,14 @@ export default function SessionPage({
                       </p>
                     </div>
                   </div>
-                  <span className="text-xs text-emerald-400">Ready 🎁</span>
+                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Ready 🎁</span>
                 </div>
               ))
             )}
           </div>
 
-          <div className="mt-5 p-3 rounded-xl bg-slate-900 border border-white/5 flex items-center space-x-2 text-[11px] text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+          <div className="mt-5 p-3 rounded-2xl bg-blue-50 border border-blue-200 flex items-center space-x-2 text-[11px] text-blue-900">
+            <ShieldCheck className="w-4 h-4 text-blue-600 flex-shrink-0" />
             <span>{t('session.privacyFooter')}</span>
           </div>
         </section>
@@ -720,16 +720,16 @@ export default function SessionPage({
 
       {/* Host Controls Modal */}
       {showHostModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-          <div className="glass-panel-red max-w-lg w-full rounded-2xl p-6 sm:p-8 shadow-2xl border border-red-500/40 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 relative text-slate-900">
             <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-10 h-10 rounded-xl bg-red-950 border border-red-700 flex items-center justify-center text-amber-300">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
                   <Key className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-white">{t('session.hostModalTitle')}</h3>
-                  <p className="text-xs text-red-200">{t('session.hostModalDesc')}</p>
+                  <h3 className="text-xl font-black text-slate-900">{t('session.hostModalTitle')}</h3>
+                  <p className="text-xs text-slate-500">{t('session.hostModalDesc')}</p>
                 </div>
               </div>
               <button
@@ -738,29 +738,29 @@ export default function SessionPage({
                   setShowConfirmDraw(false);
                   setDrawError(null);
                 }}
-                className="text-slate-400 hover:text-white text-sm font-semibold p-1"
+                className="text-slate-400 hover:text-slate-700 text-sm font-bold p-1"
               >
                 ✕
               </button>
             </div>
 
             {drawError && (
-              <div className="mb-4 p-3.5 rounded-xl bg-red-950 border border-red-800 text-red-200 text-xs flex items-start space-x-2">
-                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="mb-4 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start space-x-2">
+                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
                 <span>{drawError}</span>
               </div>
             )}
 
             {drawSuccess && (
-              <div className="mb-4 p-4 rounded-xl bg-emerald-950 border border-emerald-800 text-emerald-200 text-xs flex items-start space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+              <div className="mb-4 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-start space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
                 <span>{drawSuccess}</span>
               </div>
             )}
 
             <div className="space-y-4 mb-6">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                   {t('session.hostKeyLabel')}
                 </label>
                 <input
@@ -768,21 +768,21 @@ export default function SessionPage({
                   value={adminKey}
                   onChange={(e) => setAdminKey(e.target.value)}
                   placeholder={t('session.hostKeyPlaceholder')}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs sm:text-sm focus:outline-none focus:border-red-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 font-mono text-xs sm:text-sm focus:outline-none focus:border-red-600"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-500 mt-1">
                   {t('session.hostKeyHint')}
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-white/5 space-y-1.5 text-xs text-slate-300">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5 text-xs text-slate-700">
                 <div className="flex justify-between">
                   <span>Current Participants:</span>
-                  <strong className="text-white">{participantCount}</strong>
+                  <strong className="text-slate-900">{participantCount}</strong>
                 </div>
                 <div className="flex justify-between">
                   <span>Status:</span>
-                  <span className={isLocked ? 'text-amber-400' : 'text-emerald-400'}>
+                  <span className={isLocked ? 'text-amber-700 font-bold' : 'text-emerald-700 font-bold'}>
                     {isLocked ? t('session.statusLocked') : t('session.statusOpen')}
                   </span>
                 </div>
@@ -795,9 +795,9 @@ export default function SessionPage({
                 type="button"
                 disabled={isLocked || participantCount < 2 || isDrawing}
                 onClick={() => setShowConfirmDraw(true)}
-                className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg border border-red-500 flex items-center justify-center space-x-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm flex items-center justify-center space-x-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                <Sparkles className="w-4 h-4 text-amber-300" />
+                <Sparkles className="w-4 h-4 text-white" />
                 <span>
                   {isLocked
                     ? t('session.drawAlreadyCompleted')
@@ -807,11 +807,11 @@ export default function SessionPage({
                 </span>
               </button>
             ) : (
-              <div className="p-4 rounded-xl bg-red-950 border border-red-600 space-y-3">
-                <p className="text-xs font-bold text-white">
+              <div className="p-4 rounded-2xl bg-red-50 border border-red-200 space-y-3">
+                <p className="text-xs font-bold text-red-900">
                   ⚠️ {t('session.confirmTitle')}
                 </p>
-                <p className="text-[11px] text-slate-300 leading-relaxed">
+                <p className="text-[11px] text-red-800 leading-relaxed">
                   {t('session.confirmDesc', { count: participantCount })}
                 </p>
                 <div className="flex items-center space-x-3 pt-1">
@@ -819,7 +819,7 @@ export default function SessionPage({
                     type="button"
                     onClick={() => setShowConfirmDraw(false)}
                     disabled={isDrawing}
-                    className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-lg transition"
+                    className="flex-1 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold py-2.5 px-4 rounded-xl transition"
                   >
                     {t('session.confirmCancel')}
                   </button>
@@ -827,7 +827,7 @@ export default function SessionPage({
                     type="button"
                     onClick={handleDraw}
                     disabled={isDrawing}
-                    className="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-2.5 px-4 rounded-lg shadow-md transition flex items-center justify-center space-x-1.5"
+                    className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5"
                   >
                     {isDrawing ? (
                       <>

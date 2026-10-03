@@ -19,11 +19,9 @@ export const translations: Record<Locale, Translations> = {
     'nav.langSwitch': 'RU',
 
     // Hero
-    'hero.badge': '100% Free • Private • Zero-Cost Hosting',
-    'hero.title1': 'Organize Secret Santa',
-    'hero.title2': 'Without The Headache',
-    'hero.desc':
-      'Host the easiest holiday gift exchange. No sign-up required, participant emails remain completely secret, and fair cyclic matching ensures zero self-draws.',
+    'hero.word1': 'Organize',
+    'hero.word2': 'Secret',
+    'hero.word3': 'Santa',
     'hero.createCta': 'Create Exchange Room',
     'hero.joinCta': 'Join Existing Room',
 
@@ -165,11 +163,9 @@ export const translations: Record<Locale, Translations> = {
     'nav.langSwitch': 'EN',
 
     // Hero
-    'hero.badge': '100% Бесплатно • Приватно • Без затрат на хостинг',
-    'hero.title1': 'Организуйте Тайного Санту',
-    'hero.title2': 'Без Лишних Хлопот',
-    'hero.desc':
-      'Самый простой способ провести обмен подарками. Без регистрации, email адреса участников скрыты, а честный циклический алгоритм гарантирует отсутствие самоподарков.',
+    'hero.word1': 'Организуйте',
+    'hero.word2': 'Тайного',
+    'hero.word3': 'Санту',
     'hero.createCta': 'Создать комнату',
     'hero.joinCta': 'Войти в комнату',
 

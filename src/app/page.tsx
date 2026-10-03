@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Gift,
-  Sparkles,
   Users,
   Copy,
   Check,
@@ -145,71 +144,71 @@ export default function HomePage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-      {/* Hero Section */}
-      <section className="text-center mb-16 relative">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-red-950 border border-red-700 text-red-200 text-xs sm:text-sm font-medium mb-6">
-          <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
-          <span>{t('hero.badge')}</span>
-        </div>
-
-        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white mb-6 leading-tight">
-          {t('hero.title1')}{' '}
-          <span className="block sm:inline text-red-500">
-            {t('hero.title2')}
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+      {/* Hero Section: Centered vertically and horizontally, each word on a new line */}
+      <section className="min-h-[50vh] sm:min-h-[55vh] flex flex-col items-center justify-center text-center px-4 mb-16 relative">
+        <h1 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight leading-none text-center select-none">
+          <span className="block text-blue-600 mb-1 sm:mb-2">
+            {t('hero.word1')}
+          </span>
+          <span className="block text-red-600 mb-1 sm:mb-2">
+            {t('hero.word2')}
+          </span>
+          <span className="block text-emerald-600">
+            {t('hero.word3')}
           </span>
         </h1>
 
-        <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-          {t('hero.desc')}
-        </p>
-
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
           <a
             href="#create"
-            className="inline-flex items-center space-x-2 bg-red-600 hover:bg-red-500 text-white font-bold text-base px-6 py-3.5 rounded-xl shadow-xl shadow-red-950/60 border border-red-500 transition-all hover:scale-105 active:scale-95"
+            className="inline-flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white font-bold text-base sm:text-lg px-8 py-4 rounded-2xl shadow-sm transition active:scale-95"
           >
-            <Gift className="w-5 h-5 text-amber-300" />
+            <Gift className="w-5 h-5 text-white" />
             <span>{t('hero.createCta')}</span>
           </a>
           <a
             href="#join"
-            className="inline-flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-base px-6 py-3.5 rounded-xl border border-white/10 transition-all hover:text-white"
+            className="inline-flex items-center space-x-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-base sm:text-lg px-8 py-4 rounded-2xl border-2 border-slate-200 shadow-sm transition active:scale-95"
           >
             <span>{t('hero.joinCta')}</span>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <ArrowRight className="w-5 h-5 text-slate-500" />
           </a>
         </div>
       </section>
 
       {/* Main Interactive Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
         {/* Create Exchange Card */}
         <section
           id="create"
-          className="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-8 border border-white/10 shadow-2xl relative overflow-hidden"
+          className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm relative overflow-hidden"
         >
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-red-900 border border-red-700 flex items-center justify-center text-red-300">
-              <Gift className="w-5 h-5" />
+          <div className="flex items-center space-x-3.5 mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
+              <Gift className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">{t('create.cardTitle')}</h2>
-              <p className="text-xs text-slate-400">{t('create.cardDesc')}</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                {t('create.cardTitle')}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                {t('create.cardDesc')}
+              </p>
             </div>
           </div>
 
           {createError && (
-            <div className="mb-6 p-4 rounded-xl bg-red-950 border border-red-800 text-red-200 text-sm flex items-start space-x-2">
-              <Info className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+            <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-start space-x-2">
+              <Info className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
               <span>{createError}</span>
             </div>
           )}
 
-          <form onSubmit={handleCreate} className="space-y-4">
+          <form onSubmit={handleCreate} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                {t('create.titleLabel')} <span className="text-red-400">*</span>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                {t('create.titleLabel')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -217,14 +216,14 @@ export default function HomePage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder={t('create.titlePlaceholder')}
-                className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-sm transition"
+                className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center space-x-1">
-                  <DollarSign className="w-3.5 h-3.5 text-amber-400" />
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1">
+                  <DollarSign className="w-3.5 h-3.5 text-blue-600" />
                   <span>{t('create.budgetLabel')}</span>
                 </label>
                 <input
@@ -232,13 +231,13 @@ export default function HomePage() {
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
                   placeholder={t('create.budgetPlaceholder')}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-sm transition"
+                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center space-x-1">
-                  <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1">
+                  <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{t('create.dateLabel')}</span>
                 </label>
                 <input
@@ -246,7 +245,7 @@ export default function HomePage() {
                   value={exchangeDate}
                   onChange={(e) => setExchangeDate(e.target.value)}
                   placeholder="e.g. Dec 24, 2026 / 31.12.2026"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-sm transition"
+                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition"
                 />
               </div>
             </div>
@@ -256,16 +255,16 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="text-xs font-semibold text-slate-400 hover:text-amber-300 flex items-center space-x-1.5 transition"
+                className="text-xs font-bold text-slate-600 hover:text-red-600 flex items-center space-x-1.5 transition"
               >
                 <span>{showAdvanced ? t('create.hideAdvanced') : t('create.showAdvanced')}</span>
               </button>
 
               {showAdvanced && (
-                <div className="mt-3 p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-4">
+                <div className="mt-3 p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center space-x-1">
-                      <Lock className="w-3.5 h-3.5 text-amber-400" />
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1">
+                      <Lock className="w-3.5 h-3.5 text-blue-600" />
                       <span>{t('create.passwordLabel')}</span>
                     </label>
                     <input
@@ -273,16 +272,16 @@ export default function HomePage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder={t('create.passwordPlaceholder')}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 text-sm"
+                      className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 text-sm"
                     />
-                    <p className="text-[11px] text-slate-400 mt-1">
+                    <p className="text-[11px] text-slate-500 mt-1">
                       {t('create.passwordHint')}
                     </p>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center space-x-1">
-                      <Key className="w-3.5 h-3.5 text-red-400" />
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1">
+                      <Key className="w-3.5 h-3.5 text-red-600" />
                       <span>{t('create.adminKeyLabel')}</span>
                     </label>
                     <input
@@ -290,9 +289,9 @@ export default function HomePage() {
                       value={customAdminKey}
                       onChange={(e) => setCustomAdminKey(e.target.value)}
                       placeholder={t('create.adminKeyPlaceholder')}
-                      className="w-full px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-red-500 text-sm font-mono"
+                      className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm font-mono"
                     />
-                    <p className="text-[11px] text-slate-400 mt-1">
+                    <p className="text-[11px] text-slate-500 mt-1">
                       {t('create.adminKeyHint')}
                     </p>
                   </div>
@@ -303,7 +302,7 @@ export default function HomePage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full mt-4 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-red-950/50 border border-red-500 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+              className="w-full mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-2xl shadow-sm border border-red-600 flex items-center justify-center space-x-2 transition-all active:scale-[0.99] disabled:opacity-50 text-base"
             >
               {isSubmitting ? (
                 <div className="flex items-center space-x-2">
@@ -311,10 +310,7 @@ export default function HomePage() {
                   <span>{t('create.submittingBtn')}</span>
                 </div>
               ) : (
-                <>
-                  <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span>{t('create.submitBtn')}</span>
-                </>
+                <span>{t('create.submitBtn')}</span>
               )}
             </button>
           </form>
@@ -325,38 +321,38 @@ export default function HomePage() {
           {/* Quick Lookup Card */}
           <section
             id="join"
-            className="glass-panel rounded-2xl p-6 sm:p-7 border border-white/10 shadow-xl relative"
+            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm relative"
           >
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-emerald-900 border border-emerald-700 flex items-center justify-center text-emerald-300">
+            <div className="flex items-center space-x-3.5 mb-5">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
                 <Users className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white">{t('quickJoin.title')}</h3>
-                <p className="text-xs text-slate-400">{t('quickJoin.subtitle')}</p>
+                <h3 className="text-xl font-bold text-slate-900">{t('quickJoin.title')}</h3>
+                <p className="text-xs text-slate-500">{t('quickJoin.subtitle')}</p>
               </div>
             </div>
 
             {lookupError && (
-              <div className="mb-4 p-3 rounded-xl bg-red-950 border border-red-800 text-red-200 text-xs">
+              <div className="mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs">
                 {lookupError}
               </div>
             )}
 
-            <form onSubmit={handleLookup} className="space-y-3">
+            <form onSubmit={handleLookup} className="space-y-4">
               <div>
                 <input
                   type="text"
                   value={lookupInput}
                   onChange={(e) => setLookupInput(e.target.value)}
                   placeholder={t('quickJoin.placeholder')}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm transition"
+                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 text-sm transition"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-5 rounded-xl border border-emerald-500 shadow-md shadow-emerald-950/40 flex items-center justify-center space-x-2 transition hover:scale-[1.01] active:scale-[0.99]"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-5 rounded-2xl shadow-sm flex items-center justify-center space-x-2 transition active:scale-[0.99]"
               >
                 <span>{t('quickJoin.button')}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -365,12 +361,12 @@ export default function HomePage() {
           </section>
 
           {/* Quick Santa Promise Card */}
-          <div className="glass-panel-gold rounded-2xl p-6 border shadow-xl">
-            <h4 className="font-bold text-amber-300 text-sm uppercase tracking-wider flex items-center space-x-1.5 mb-2">
+          <div className="bg-emerald-50 rounded-3xl p-6 sm:p-7 border border-emerald-200 shadow-sm">
+            <h4 className="font-bold text-emerald-800 text-sm uppercase tracking-wider flex items-center space-x-2 mb-2">
               <span>🎁</span>
               <span>100% Fair & Private</span>
             </h4>
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-emerald-900/80 leading-relaxed">
               Every participant draws exactly one secret elf and receives a gift from exactly one Secret Santa. No self-matches, no leaks, zero cost.
             </p>
           </div>
@@ -379,14 +375,14 @@ export default function HomePage() {
 
       {/* Post-Creation Modal / Overlay */}
       {createdSession && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-          <div className="glass-panel-gold max-w-lg w-full rounded-2xl p-6 sm:p-8 shadow-2xl border border-amber-500/40 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 relative text-slate-900">
             <div className="text-center mb-6">
-              <div className="w-16 h-16 rounded-full bg-red-700 flex items-center justify-center text-3xl mx-auto mb-3 shadow-lg shadow-black/40">
+              <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center text-3xl mx-auto mb-3 text-white shadow-sm">
                 🎅
               </div>
-              <h3 className="text-2xl font-black text-white">{t('createdModal.title')}</h3>
-              <p className="text-xs sm:text-sm text-amber-200 mt-1">
+              <h3 className="text-2xl font-black text-slate-900">{t('createdModal.title')}</h3>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1">
                 &ldquo;{createdSession.title}&rdquo; {t('createdModal.desc')}
               </p>
             </div>
@@ -394,7 +390,7 @@ export default function HomePage() {
             <div className="space-y-4 mb-6">
               {/* Shareable Link Box */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                   {t('createdModal.step1')}
                 </label>
                 <div className="flex items-center space-x-2">
@@ -402,23 +398,23 @@ export default function HomePage() {
                     type="text"
                     readOnly
                     value={getSessionShareUrl(createdSession.id)}
-                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-slate-200 font-mono truncate"
+                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-800 font-mono truncate"
                   />
                   <button
                     type="button"
                     onClick={() =>
                       copyToClipboard(getSessionShareUrl(createdSession.id), 'link')
                     }
-                    className="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs border border-white/10 flex items-center space-x-1 transition"
+                    className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition"
                   >
                     {copiedLink ? (
                       <>
-                        <Check className="w-4 h-4 text-emerald-400" />
-                        <span className="text-emerald-400">{t('createdModal.copied')}</span>
+                        <Check className="w-4 h-4 text-emerald-400 inline mr-1" />
+                        <span>{t('createdModal.copied')}</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-4 h-4 text-slate-300" />
+                        <Copy className="w-4 h-4 inline mr-1" />
                         <span>{t('createdModal.copy')}</span>
                       </>
                     )}
@@ -427,29 +423,29 @@ export default function HomePage() {
               </div>
 
               {/* Admin Key Warning Box */}
-              <div className="p-4 rounded-xl bg-red-950 border border-red-700">
+              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
                 <div className="flex items-start space-x-2.5">
-                  <Key className="w-5 h-5 text-amber-300 flex-shrink-0 mt-0.5" />
+                  <Key className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-xs font-bold text-amber-300 uppercase tracking-wide">
+                    <p className="text-xs font-bold text-amber-900 uppercase tracking-wide">
                       ⚠️ {t('createdModal.adminWarningTitle')}
                     </p>
-                    <p className="text-[11px] text-slate-300 mt-1 mb-2">
+                    <p className="text-[11px] text-amber-800 mt-1 mb-2">
                       {t('createdModal.adminWarningDesc')}
                     </p>
                     <div className="flex items-center space-x-2">
-                      <code className="flex-1 px-2.5 py-1.5 rounded-lg bg-black/60 text-amber-200 text-xs font-mono font-bold select-all truncate border border-amber-500/20">
+                      <code className="flex-1 px-2.5 py-1.5 rounded-lg bg-white text-slate-900 text-xs font-mono font-bold select-all truncate border border-amber-300">
                         {createdSession.adminKey}
                       </code>
                       <button
                         type="button"
                         onClick={() => copyToClipboard(createdSession.adminKey, 'key')}
-                        className="px-2.5 py-1.5 rounded-lg bg-red-800 hover:bg-red-700 text-white text-xs font-semibold transition flex items-center space-x-1"
+                        className="px-2.5 py-1.5 rounded-lg bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold transition flex items-center space-x-1"
                       >
                         {copiedKey ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-300" />
+                          <Check className="w-3.5 h-3.5 inline mr-1" />
                         ) : (
-                          <Copy className="w-3.5 h-3.5" />
+                          <Copy className="w-3.5 h-3.5 inline mr-1" />
                         )}
                         <span>{copiedKey ? t('createdModal.saved') : t('createdModal.copy')}</span>
                       </button>
@@ -462,7 +458,7 @@ export default function HomePage() {
             <div className="flex items-center space-x-3">
               <Link
                 href={`/session/${createdSession.id}`}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-5 rounded-xl text-center shadow-lg shadow-emerald-950/40 flex items-center justify-center space-x-2 transition"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-5 rounded-2xl text-center shadow-sm flex items-center justify-center space-x-2 transition"
               >
                 <span>{t('createdModal.enterRoom')}</span>
                 <ArrowRight className="w-4 h-4" />

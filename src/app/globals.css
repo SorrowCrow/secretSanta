@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #081121;
-  --foreground: #f8fafc;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
 body {
@@ -21,10 +21,10 @@ body {
     opacity: 0;
   }
   10% {
-    opacity: 0.9;
+    opacity: 0.6;
   }
   90% {
-    opacity: 0.8;
+    opacity: 0.6;
   }
   100% {
     transform: translateY(105vh) translateX(45px) rotate(360deg);
@@ -35,7 +35,7 @@ body {
 .snowflake {
   position: fixed;
   top: -20px;
-  color: #ffffff;
+  color: #93c5fd;
   pointer-events: none;
   z-index: 10;
   user-select: none;
@@ -45,66 +45,46 @@ body {
   animation-iteration-count: infinite;
 }
 
-/* Twinkle animations for stars & festive lights */
-@keyframes festive-pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.45;
-    transform: scale(0.92);
-  }
-}
-
-.animate-festive-pulse {
-  animation: festive-pulse 2.5s ease-in-out infinite;
-}
-
-/* Frosted glass panel effect */
+/* Clean minimalist cards */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
 .glass-panel-gold {
-  background: rgba(22, 28, 48, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(248, 178, 41, 0.28);
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.05);
 }
 
 .glass-panel-red {
-  background: rgba(30, 18, 26, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(196, 30, 58, 0.35);
+  background: #ffffff;
+  border: 1px solid #fecaca;
+  box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.08);
 }
 
 .glass-panel-green {
-  background: rgba(14, 30, 24, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(22, 91, 51, 0.45);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.05);
 }
 
-/* Custom festive scrollbar */
+/* Minimalist scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #081121;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }
