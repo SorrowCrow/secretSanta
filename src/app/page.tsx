@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -27,6 +27,7 @@ export default function HomePage() {
   const [title, setTitle] = useState('');
   const [budget, setBudget] = useState('');
   const [exchangeDate, setExchangeDate] = useState('');
+  const dateInputRef = useRef<HTMLInputElement>(null);
   const [password, setPassword] = useState('');
   const [customAdminKey, setCustomAdminKey] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -371,16 +372,44 @@ export default function HomePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1">
+                <label
+                  htmlFor="exchange-date-input"
+                  onClick={() => {
+                    try {
+                      dateInputRef.current?.showPicker();
+                    } catch {
+                      dateInputRef.current?.focus();
+                    }
+                  }}
+                  className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1 cursor-pointer select-none"
+                >
                   <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{t('create.dateLabel')}</span>
                 </label>
-                <input
-                  type="date"
-                  value={exchangeDate}
-                  onChange={(e) => setExchangeDate(e.target.value)}
-                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition cursor-pointer"
-                />
+                <div
+                  onClick={() => {
+                    try {
+                      dateInputRef.current?.showPicker();
+                    } catch {
+                      dateInputRef.current?.focus();
+                    }
+                  }}
+                  className="relative cursor-pointer"
+                >
+                  <input
+                    ref={dateInputRef}
+                    id="exchange-date-input"
+                    type="date"
+                    value={exchangeDate}
+                    onChange={(e) => setExchangeDate(e.target.value)}
+                    onClick={(e) => {
+                      try {
+                        e.currentTarget.showPicker();
+                      } catch {}
+                    }}
+                    className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition cursor-pointer"
+                  />
+                </div>
               </div>
             </div>
 

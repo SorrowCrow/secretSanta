@@ -80,7 +80,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
   const budgetVal = escapeHtml(budget?.trim() || (isRu ? 'Не указан' : 'No limit specified'));
 
   const dateLabel = isRu ? '📅 Дата обмена' : '📅 Exchange Date';
-  const dateVal = escapeHtml(exchangeDate?.trim() || (isRu ? 'Будет объявлена' : 'To be announced'));
+  const dateVal = escapeHtml(exchangeDate?.trim() || (isRu ? 'Будет объявлена позже' : 'To be announced'));
 
   const prefTitle = isRu
     ? `🎯 Предпочтения ${escapeHtml(receiverName)}`
@@ -308,7 +308,7 @@ export function buildSecretSantaPlainText(params: SendSecretSantaMatchEmailParam
 
   text += `--------------------------------------------------\n`;
   text += isRu
-    ? `💰 Бюджет:        ${budget?.trim() || 'Не указан'}\n📅 Дата обмена:  ${exchangeDate?.trim() || 'Будет объявлена'}\n`
+    ? `💰 Бюджет:        ${budget?.trim() || 'Не указан'}\n📅 Дата обмена:  ${exchangeDate?.trim() || 'Будет объявлена позже'}\n`
     : `💰 Budget:        ${budget?.trim() || 'Not specified'}\n📅 Exchange Date: ${exchangeDate?.trim() || 'To be announced'}\n`;
   text += `--------------------------------------------------\n\n`;
 
@@ -342,6 +342,44 @@ export function buildSecretSantaPlainText(params: SendSecretSantaMatchEmailParam
 
 /**
  * Formats a holiday match box to stdout with an ASCII border.
+/**
+ * Calculates visual display column width for monospace terminal display,
+ * treating wide symbols and emojis as 2 columns.
+ */
+function getStringVisualWidth(str: string): number {
+  let w = 0;
+  for (const char of str) {
+    const cp = char.codePointAt(0) || 0;
+    if (
+      (cp >= 0x1f300 && cp <= 0x1f9ff) ||
+      (cp >= 0x2600 && cp <= 0x27bf) ||
+      (cp >= 0xfe00 && cp <= 0xfe0f) ||
+      (cp >= 0x1f1e6 && cp <= 0x1f1ff) ||
+      (cp >= 0x2b50 && cp <= 0x2b55)
+    ) {
+      w += 2;
+    } else {
+      w += 1;
+    }
+  }
+  return w;
+}
+
+function truncateToVisualWidth(str: string, maxW: number): string {
+  let curW = 0;
+  let res = '';
+  for (const ch of str) {
+    const w = getStringVisualWidth(ch);
+    if (curW + w > maxW) break;
+    curW += w;
+    res += ch;
+  }
+  return res;
+}
+
+/**
+ * Formats a holiday match box to stdout with an ASCII border.
+ * Fully supports Russian ('ru') and English ('en').
  */
 function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject: string): void {
   const {
@@ -356,17 +394,23 @@ function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject
     exchangeDate,
     festivePoem,
     giftIdeas,
+    locale = 'en',
   } = params;
 
+  const isRu = locale === 'ru';
   const fullReceiverName = `${receiverName} ${receiverSurname}`.trim();
   const width = 74;
-
   const innerWidth = width - 4; // 70
 
   const padLine = (content: string): string => {
-    const cleanContent = content.slice(0, innerWidth);
-    const padding = ' '.repeat(Math.max(0, innerWidth - cleanContent.length));
-    return `│ ${cleanContent}${padding} │`;
+    let text = content;
+    let visualLen = getStringVisualWidth(text);
+    if (visualLen > innerWidth) {
+      text = truncateToVisualWidth(text, innerWidth);
+      visualLen = getStringVisualWidth(text);
+    }
+    const padding = ' '.repeat(Math.max(0, innerWidth - visualLen));
+    return `│ ${text}${padding} │`;
   };
 
   const wrapText = (text: string, maxLen: number): string[] => {
@@ -375,8 +419,9 @@ function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject
     let current = '';
 
     for (const w of words) {
-      if ((current + ' ' + w).trim().length <= maxLen) {
-        current = (current + ' ' + w).trim();
+      const candidate = (current ? current + ' ' : '') + w;
+      if (getStringVisualWidth(candidate) <= maxLen) {
+        current = candidate;
       } else {
         if (current) lines.push(current);
         current = w;
@@ -387,41 +432,68 @@ function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject
   };
 
   const addWrapped = (prefix: string, text: string) => {
-    const available = innerWidth - prefix.length;
+    const prefixWidth = getStringVisualWidth(prefix);
+    const available = innerWidth - prefixWidth;
     const wrapped = wrapText(text, available);
     wrapped.forEach((line, i) => {
       if (i === 0) {
         lines.push(padLine(`${prefix}${line}`));
       } else {
-        lines.push(padLine(`${' '.repeat(prefix.length)}${line}`));
+        lines.push(padLine(`${' '.repeat(prefixWidth)}${line}`));
       }
     });
   };
 
+  const formatKeyVal = (label: string, value: string, targetWidth: number): string => {
+    const labelWidth = getStringVisualWidth(label);
+    const pad = ' '.repeat(Math.max(1, targetWidth - labelWidth));
+    return `${label}${pad}${value}`;
+  };
+
+  const headerBanner = isRu
+    ? '🎅 ОТПРАВЛЕНИЕ ТАЙНОГО САНТЫ (ТЕСТ / MOCK)'
+    : '🎅 SECRET SANTA DISPATCH (SIMULATED / MOCK)';
+  const toLabel = isRu ? 'Кому:' : 'To:';
+  const sessionLabel = isRu ? 'Комната:' : 'Session:';
+  const subjectLabel = isRu ? 'Тема:' : 'Subject:';
+  const recipientLabel = isRu ? '🎁 ПОДОПЕЧНЫЙ:' : '🎁 RECIPIENT:';
+  const budgetLabel = isRu ? '💰 БЮДЖЕТ:' : '💰 BUDGET:';
+  const exchangeLabel = isRu ? '📅 ДАТА ОБМЕНА:' : '📅 EXCHANGE:';
+  const defaultBudget = isRu ? 'Не указан' : 'Not specified';
+  const defaultDate = isRu ? 'Будет объявлена позже' : 'To be announced';
+  const prefHeading = isRu ? '🎯 ПОЖЕЛАНИЯ ПОДОПЕЧНОГО:' : '🎯 RECIPIENT PREFERENCES:';
+  const wishlistLabel = isRu ? '• Список желаний: ' : '• Wishlist:    ';
+  const hobbiesLabel = isRu ? '• Увлечения:      ' : '• Hobbies:     ';
+  const poemHeading = isRu ? '📜 ПРАЗДНИЧНЫЙ СТИХ ОТ САНТЫ:' : "📜 SANTA'S FESTIVE RHYME:";
+  const giftHeading = isRu ? '💡 ИДЕИ ПОДАРКОВ ОТ САНТЫ:' : '💡 AI GIFT INSPIRATION:';
+  const ruleText = isRu
+    ? '🤫 ПРАВИЛО: Сохраняйте в секрете до дня обмена! 🎄'
+    : '🤫 RULE: Keep it a secret until exchange day! 🎄';
+
   const lines: string[] = [
     '',
     `┌${'─'.repeat(width - 2)}┐`,
-    `│ 🎅 SECRET SANTA DISPATCH (SIMULATED / MOCK)                            │`,
+    padLine(headerBanner),
     `├${'─'.repeat(width - 2)}┤`,
-    padLine(`To:        ${giverEmail} (${giverName})`),
-    padLine(`Session:   ${sessionTitle}`),
-    padLine(`Subject:   ${subject}`),
+    padLine(formatKeyVal(toLabel, `${giverEmail} (${giverName})`, 12)),
+    padLine(formatKeyVal(sessionLabel, sessionTitle, 12)),
+    padLine(formatKeyVal(subjectLabel, subject, 12)),
     `├${'─'.repeat(width - 2)}┤`,
-    padLine(`🎁 RECIPIENT:  ${fullReceiverName}`),
-    padLine(`💰 BUDGET:     ${budget?.trim() || 'Not specified'}`),
-    padLine(`📅 EXCHANGE:   ${exchangeDate?.trim() || 'To be announced'}`),
+    padLine(formatKeyVal(recipientLabel, fullReceiverName, 18)),
+    padLine(formatKeyVal(budgetLabel, budget?.trim() || defaultBudget, 18)),
+    padLine(formatKeyVal(exchangeLabel, exchangeDate?.trim() || defaultDate, 18)),
     padLine(''),
   ];
 
   if (receiverWishlist || receiverHobbies) {
-    lines.push(padLine(`🎯 RECIPIENT PREFERENCES:`));
-    if (receiverWishlist) addWrapped('• Wishlist:    ', receiverWishlist);
-    if (receiverHobbies) addWrapped('• Hobbies:     ', receiverHobbies);
+    lines.push(padLine(prefHeading));
+    if (receiverWishlist) addWrapped(wishlistLabel, receiverWishlist);
+    if (receiverHobbies) addWrapped(hobbiesLabel, receiverHobbies);
     lines.push(padLine(''));
   }
 
   if (festivePoem) {
-    lines.push(padLine(`📜 SANTA'S FESTIVE RHYME:`));
+    lines.push(padLine(poemHeading));
     festivePoem
       .split('\n')
       .map((l) => l.trim())
@@ -433,14 +505,14 @@ function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject
   }
 
   if (giftIdeas && giftIdeas.length > 0) {
-    lines.push(padLine(`💡 AI GIFT INSPIRATION:`));
+    lines.push(padLine(giftHeading));
     giftIdeas.forEach((idea) => {
       addWrapped('🎁 ', idea);
     });
     lines.push(padLine(''));
   }
 
-  lines.push(padLine(`🤫 RULE: Keep it a secret until exchange day! 🎄`));
+  lines.push(padLine(ruleText));
   lines.push(`└${'─'.repeat(width - 2)}┘`);
   lines.push('');
 
@@ -474,8 +546,9 @@ export async function sendSecretSantaMatchEmail(
   if (resendApiKey) {
     try {
       const resend = new Resend(resendApiKey);
+      const defaultSender = isRu ? 'Тайный Санта' : 'Secret Santa';
       const fromAddress =
-        process.env.EMAIL_FROM?.trim() || 'Secret Santa <onboarding@resend.dev>';
+        process.env.EMAIL_FROM?.trim() || `${defaultSender} <onboarding@resend.dev>`;
 
       const htmlContent = buildSecretSantaEmailHtml(params);
       const textContent = buildSecretSantaPlainText(params);
