@@ -348,14 +348,28 @@ export default function SessionPage({
   // Password Gate Screen
   if (session.isPasswordProtected && !session.isUnlocked) {
     return (
-      <div className="max-w-md mx-auto px-4 py-16 animate-fadeIn">
-        <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 text-center">
+      <div className="w-full max-w-md mx-auto px-4 py-8 sm:py-16 animate-fadeIn">
+        {/* Top Language Switcher */}
+        <div className="mb-4 flex justify-center">
+          <LanguageSwitch />
+        </div>
+
+        <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 text-center w-full max-w-full overflow-hidden">
           <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center mx-auto mb-4 text-blue-600">
             <Lock className="w-8 h-8" />
           </div>
 
-          <h2 className="text-2xl font-black text-slate-900 mb-1">{session.title}</h2>
-          <p className="text-xs text-blue-700 font-bold uppercase tracking-wider mb-6">
+          <h2 className="text-2xl font-black text-slate-900 mb-1 break-words break-all min-w-0 max-w-full">
+            {session.title}
+          </h2>
+
+          {/* Room ID Badge with safe truncation */}
+          <div className="mt-2 mb-4 inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-mono max-w-full min-w-0">
+            <span className="text-slate-400 font-sans font-semibold flex-shrink-0">ID:</span>
+            <span className="truncate max-w-[200px] sm:max-w-[260px]">{session.id || sessionId}</span>
+          </div>
+
+          <p className="text-xs text-blue-700 font-bold uppercase tracking-wider mb-4">
             🔒 {t('session.passwordProtected')}
           </p>
 
@@ -370,7 +384,7 @@ export default function SessionPage({
             </div>
           )}
 
-          <form onSubmit={handleUnlock} className="space-y-4">
+          <form onSubmit={handleUnlock} className="space-y-4 w-full min-w-0">
             <input
               type="password"
               required
@@ -378,13 +392,13 @@ export default function SessionPage({
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
               placeholder={t('session.gatePlaceholder')}
-              className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-center text-sm focus:outline-none focus:border-blue-600 font-medium"
+              className="w-full max-w-full min-w-0 h-[52px] px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-center text-sm focus:outline-none focus:border-blue-600 font-medium box-border"
             />
 
             <button
               type="submit"
               disabled={isUnlocking}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-5 rounded-2xl shadow-sm transition active:scale-[0.99] flex items-center justify-center space-x-2 disabled:opacity-50"
+              className="w-full h-[52px] bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-5 rounded-2xl shadow-sm transition active:scale-[0.99] flex items-center justify-center space-x-2 disabled:opacity-50"
             >
               {isUnlocking ? (
                 <span>{t('session.gateCheckingBtn')}</span>
@@ -398,8 +412,9 @@ export default function SessionPage({
           </form>
 
           <div className="mt-6 pt-4 border-t border-slate-100">
-            <Link href="/" className="text-xs font-bold text-slate-500 hover:text-slate-800 transition">
-              {t('session.backHome')}
+            <Link href="/" className="inline-flex items-center space-x-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 transition">
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>{t('session.backHome')}</span>
             </Link>
           </div>
         </div>
@@ -455,7 +470,7 @@ export default function SessionPage({
               )}
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight break-words break-all min-w-0 max-w-full">
               {session.title}
             </h1>
 
@@ -484,7 +499,7 @@ export default function SessionPage({
           </div>
 
           {/* Host Controls Trigger Button */}
-          <div className="flex sm:flex-col items-center sm:items-end gap-2">
+          <div className="flex sm:flex-col items-center sm:items-end gap-2 flex-shrink-0">
             <button
               onClick={() => setShowHostModal(true)}
               className="inline-flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition shadow-xs"
@@ -503,13 +518,13 @@ export default function SessionPage({
         </div>
 
         {/* Shareable Link Bar */}
-        <div className="mt-6 pt-5 border-t border-slate-100">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+        <div className="mt-6 pt-5 border-t border-slate-100 min-w-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 min-w-0">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center space-x-1 flex-shrink-0">
               <Gift className="w-3.5 h-3.5 text-red-600" />
               <span>{t('session.shareBarLabel')}</span>
             </span>
-            <div className="flex-1 flex items-center space-x-2">
+            <div className="flex-1 flex items-center space-x-2 min-w-0">
               <input
                 type="text"
                 readOnly
@@ -518,7 +533,7 @@ export default function SessionPage({
                     ? `${window.location.origin}${getBasePath()}/session/${sessionId}`
                     : `/session/${sessionId}`
                 }
-                className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-800 font-mono truncate"
+                className="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-800 font-mono truncate"
               />
               <button
                 type="button"
