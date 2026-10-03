@@ -113,19 +113,24 @@ export async function generateSantaPoem(
   const apiKey = process.env.GEMINI_API_KEY?.trim();
 
   if (apiKey) {
-    try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const candidateModels = [
+      process.env.GEMINI_MODEL,
+      'gemini-3.5-flash-lite',
+      'gemini-3.8-flash',
+      'gemini-flash-latest',
+    ].filter(Boolean) as string[];
 
-      const prompt =
-        locale === 'ru'
-          ? `Ты — Тайный Санта. Напиши праздничное, доброе 4-строчное новогоднее стихотворение на русском языке для ${safeGiver}, в котором раскрывается, что его тайный подопечный — ${safeReceiver}.
+    const genAI = new GoogleGenerativeAI(apiKey);
+
+    const prompt =
+      locale === 'ru'
+        ? `Ты — Тайный Санта. Напиши праздничное, доброе 4-строчное новогоднее стихотворение на русском языке для ${safeGiver}, в котором раскрывается, что его тайный подопечный — ${safeReceiver}.
 Строгие правила:
 - Ровно 4 строки рифмованного стихотворения на русском языке.
 - Праздничное зимнее настроение, добрый ритм.
 - НЕ упоминай никаких других людей.
 - Верни ТОЛЬКО 4 строки стиха без кавычек, заголовков и пояснений.`
-          : `You are Santa Claus writing a Secret Santa match poem.
+        : `You are Santa Claus writing a Secret Santa match poem.
 Write a festive, heartwarming 4-line rhyming Christmas poem addressed to ${safeGiver} revealing that ${safeReceiver} is their Secret Santa recipient.
 Strict rules:
 - Exactly 4 lines of rhyming poetry.
@@ -133,30 +138,33 @@ Strict rules:
 - Do NOT mention any other person or external details.
 - Return ONLY the 4 lines of poetry without title, quotation marks, markdown headings, or explanation.`;
 
-      const result = await model.generateContent(prompt);
-      const text = result.response.text()?.trim();
+    for (const modelName of candidateModels) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(prompt);
+        const text = result.response.text()?.trim();
 
-      if (text) {
-        // Clean out possible code fences or surrounding quotes
-        const cleaned = text
-          .replace(/^```[a-z]*\n?/gi, '')
-          .replace(/\n?```$/gi, '')
-          .replace(/^["']|["']$/g, '')
-          .trim();
+        if (text) {
+          const cleaned = text
+            .replace(/^```[a-z]*\n?/gi, '')
+            .replace(/\n?```$/gi, '')
+            .replace(/^["']|["']$/g, '')
+            .trim();
 
-        const lines = cleaned
-          .split('\n')
-          .map((l) => l.trim())
-          .filter(Boolean);
+          const lines = cleaned
+            .split('\n')
+            .map((l) => l.trim())
+            .filter(Boolean);
 
-        if (lines.length >= 3 && lines.length <= 6) {
-          return lines.slice(0, 4).join('\n');
+          if (lines.length >= 3 && lines.length <= 6) {
+            return lines.slice(0, 4).join('\n');
+          }
         }
+      } catch (err) {
+        console.warn(
+          `[Santa AI] Gemini poem generation failed on ${modelName} (${(err as Error).message}). Trying next candidate.`
+        );
       }
-    } catch (err) {
-      console.warn(
-        `[Santa AI] Gemini poem generation failed (${(err as Error).message}). Using festive fallback.`
-      );
     }
   }
 
@@ -348,13 +356,18 @@ export async function generateGiftIdeas(
   const apiKey = process.env.GEMINI_API_KEY?.trim();
 
   if (apiKey) {
-    try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const candidateModels = [
+      process.env.GEMINI_MODEL,
+      'gemini-3.5-flash-lite',
+      'gemini-3.8-flash',
+      'gemini-flash-latest',
+    ].filter(Boolean) as string[];
 
-      const prompt =
-        locale === 'ru'
-          ? `Ты — главный новогодний советник по подаркам Тайного Санты.
+    const genAI = new GoogleGenerativeAI(apiKey);
+
+    const prompt =
+      locale === 'ru'
+        ? `Ты — главный новогодний советник по подаркам Тайного Санты.
 Предложи ровно 3 креативных, душевных и подходящих по бюджету подарка для ${safeReceiver}.
 Лимит бюджета: ${budget?.trim() || 'Около 20 € - 30 €'}
 Список желаний: ${wishlist?.trim() || 'Не указан'}
@@ -367,7 +380,7 @@ export async function generateGiftIdeas(
 - Верни ТОЛЬКО JSON-массив из 3 строк, например:
 ["Подарок 1 с кратким пояснением", "Подарок 2 с кратким пояснением", "Подарок 3 с кратким пояснением"]
 - Не пиши ничего вне JSON массива.`
-          : `You are Santa's top gift advisor.
+        : `You are Santa's top gift advisor.
 Suggest exactly 3 creative, thoughtful, and budget-friendly Secret Santa gift ideas for ${safeReceiver}.
 Budget Limit: ${budget?.trim() || 'Around €20 - €30'}
 Recipient's Wishlist: ${wishlist?.trim() || 'None provided'}
@@ -381,29 +394,33 @@ Rules:
 ["Item 1 with brief reason", "Item 2 with brief reason", "Item 3 with brief reason"]
 - Do not output any markdown code blocks, backticks, or other text outside the JSON array.`;
 
-      const result = await model.generateContent(prompt);
-      const text = result.response.text()?.trim();
+    for (const modelName of candidateModels) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(prompt);
+        const text = result.response.text()?.trim();
 
-      if (text) {
-        // Strip possible markdown fences
-        const jsonText = text
-          .replace(/^```(?:json)?\s*/i, '')
-          .replace(/\s*```$/i, '')
-          .trim();
+        if (text) {
+          // Strip possible markdown fences
+          const jsonText = text
+            .replace(/^```(?:json)?\s*/i, '')
+            .replace(/\s*```$/i, '')
+            .trim();
 
-        const parsed = JSON.parse(jsonText);
-        if (
-          Array.isArray(parsed) &&
-          parsed.length >= 3 &&
-          parsed.every((item) => typeof item === 'string' && item.trim().length > 0)
-        ) {
-          return parsed.slice(0, 3).map((item: string) => item.trim());
+          const parsed = JSON.parse(jsonText);
+          if (
+            Array.isArray(parsed) &&
+            parsed.length >= 3 &&
+            parsed.every((item) => typeof item === 'string' && item.trim().length > 0)
+          ) {
+            return parsed.slice(0, 3).map((item: string) => item.trim());
+          }
         }
+      } catch (err) {
+        console.warn(
+          `[Santa AI] Gemini gift ideas generation failed on ${modelName} (${(err as Error).message}). Trying next candidate.`
+        );
       }
-    } catch (err) {
-      console.warn(
-        `[Santa AI] Gemini gift ideas generation failed (${(err as Error).message}). Using curated fallback.`
-      );
     }
   }
 

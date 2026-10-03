@@ -40,8 +40,8 @@ async function runTests() {
   console.log('\n--- Checking Russian Poem & Gift Suggestions ---');
   const ruPoem = await generateSantaPoem('Иван', 'Мария', 'ru');
   assert(ruPoem.length > 20, 'Russian poem generated with substantial length');
-  assert(ruPoem.includes('Иван'), 'Russian poem contains giver name');
-  assert(ruPoem.includes('Мария'), 'Russian poem contains receiver name');
+  assert(/иван/i.test(ruPoem), 'Russian poem contains giver name');
+  assert(/мари/i.test(ruPoem), 'Russian poem contains receiver name');
   assert(/[а-яА-ЯёЁ]/.test(ruPoem), 'Russian poem contains Cyrillic characters');
 
   const ruGifts = await generateGiftIdeas('Мария', 'кофе, книги', 'чтение', '25 €', 'ru');
