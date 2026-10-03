@@ -21,7 +21,7 @@ import LanguageSwitch from '@/components/LanguageSwitch';
 
 export default function HomePage() {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
 
   // Create exchange form state
   const [title, setTitle] = useState('');
@@ -424,7 +424,7 @@ export default function HomePage() {
                       dateInputRef.current?.focus();
                     }
                   }}
-                  className="relative w-full min-w-0 cursor-pointer"
+                  className="relative w-full max-w-full min-w-0 cursor-pointer overflow-hidden rounded-xl border-2 border-slate-200 focus-within:border-red-600 transition bg-white"
                 >
                   <input
                     ref={dateInputRef}
@@ -437,8 +437,28 @@ export default function HomePage() {
                         e.currentTarget.showPicker();
                       } catch {}
                     }}
-                    className="w-full max-w-full min-w-0 block px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition cursor-pointer box-border [color-scheme:light]"
+                    className="w-full max-w-full min-w-0 block pr-10 pl-3.5 sm:pl-4 py-3 sm:py-3.5 bg-transparent border-0 text-slate-900 placeholder-slate-400 focus:outline-none text-base sm:text-sm transition cursor-pointer box-border appearance-none [-webkit-appearance:none] [color-scheme:light] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:m-0"
                   />
+                  <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <Calendar className="w-4 h-4 text-slate-400" />
+                  </div>
+                </div>
+                {/* Quick Date preset chips */}
+                <div className="flex items-center flex-wrap gap-1.5 mt-2">
+                  {[
+                    { label: locale === 'ru' ? '24 дек' : 'Dec 24', val: `${new Date().getFullYear()}-12-24` },
+                    { label: locale === 'ru' ? '25 дек' : 'Dec 25', val: `${new Date().getFullYear()}-12-25` },
+                    { label: locale === 'ru' ? '31 дек' : 'Dec 31', val: `${new Date().getFullYear()}-12-31` },
+                  ].map((preset) => (
+                    <button
+                      key={preset.val}
+                      type="button"
+                      onClick={() => setExchangeDate(preset.val)}
+                      className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 text-slate-600 border border-slate-200 transition active:scale-95 cursor-pointer"
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
