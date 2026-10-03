@@ -376,11 +376,10 @@ export default function HomePage() {
                   <span>{t('create.dateLabel')}</span>
                 </label>
                 <input
-                  type="text"
+                  type="date"
                   value={exchangeDate}
                   onChange={(e) => setExchangeDate(e.target.value)}
-                  placeholder="e.g. Dec 24, 2026 / 31.12.2026"
-                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition"
+                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition cursor-pointer"
                 />
               </div>
             </div>
