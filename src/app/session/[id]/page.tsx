@@ -23,6 +23,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { getApiPath, getBasePath } from '@/lib/api-helper';
+import { useLanguage } from '@/lib/i18n';
 import type { PublicSession, PublicParticipant } from '@/lib/privacy';
 
 interface SessionData extends Partial<PublicSession> {
@@ -44,6 +45,7 @@ export default function SessionPage({
 }) {
   const resolvedParams = use(params);
   const sessionId = resolvedParams.id;
+  const { t, locale } = useLanguage();
 
   // Session state
   const [session, setSession] = useState<SessionData | null>(null);
@@ -117,43 +119,40 @@ export default function SessionPage({
     setUnlockError(null);
 
     if (!passwordInput.trim()) {
-      setUnlockError('Please enter the password');
+      setUnlockError(t('quickJoin.errorEmpty'));
       return;
     }
 
     try {
       setIsUnlocking(true);
-      const res = await fetch(
-        getApiPath(`/api/sessions/${sessionId}/verify-password`),
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: passwordInput.trim() }),
-        }
-      );
+      const res = await fetch(getApiPath(`/api/sessions/${sessionId}/verify-password`), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput.trim() }),
+      });
 
       const data = await res.json();
       if (!res.ok || !data.success) {
         throw new Error(data.error || 'Incorrect password');
       }
 
-      // Password verified! Refresh session
+      // Re-fetch full session data now unlocked
       await fetchSession();
     } catch (err: unknown) {
-      setUnlockError((err as Error).message || 'Verification failed');
+      setUnlockError((err as Error).message || 'Incorrect password');
     } finally {
       setIsUnlocking(false);
     }
   };
 
-  // Handle participant join
+  // Handle joining exchange
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();
     setJoinError(null);
     setJoinSuccess(null);
 
     if (!name.trim() || !surname.trim() || !email.trim()) {
-      setJoinError('First name, last name, and email are required');
+      setJoinError('Name, surname, and email are required');
       return;
     }
 
@@ -165,7 +164,7 @@ export default function SessionPage({
         body: JSON.stringify({
           name: name.trim(),
           surname: surname.trim(),
-          email: email.trim(),
+          email: email.trim().toLowerCase(),
           wishlist: wishlist.trim() || undefined,
           hobbies: hobbies.trim() || undefined,
         }),
@@ -176,23 +175,9 @@ export default function SessionPage({
         throw new Error(data.error || 'Failed to join exchange');
       }
 
-      // Confetti burst! 🎉
-      try {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#c41e3a', '#165b33', '#f8b229', '#ffffff'],
-        });
-      } catch {
-        // confetti fallback
-      }
+      setJoinSuccess(t('session.joinSuccess'));
 
-      setJoinSuccess(
-        `Welcome to the workshop, ${data.name}! You're registered. Santa will email your match when the host initiates the draw.`
-      );
-
-      // Reset form
+      // Clear input fields
       setName('');
       setSurname('');
       setEmail('');
@@ -214,7 +199,7 @@ export default function SessionPage({
     setDrawSuccess(null);
 
     if (!adminKey.trim()) {
-      setDrawError('Please enter your host admin key');
+      setDrawError(t('session.hostKeyPlaceholder'));
       return;
     }
 
@@ -233,7 +218,7 @@ export default function SessionPage({
         throw new Error(data.error || 'Failed to complete draw');
       }
 
-      // Massive holiday celebration confetti!
+      // Celebration confetti!
       try {
         confetti({
           particleCount: 160,
@@ -246,7 +231,7 @@ export default function SessionPage({
       }
 
       setDrawSuccess(
-        `Ho ho ho! Successfully matched ${data.matchesDrawn} participants and dispatched all Secret Santa emails!`
+        `🎅 ${data.matchesDrawn} pairs matched! Secret emails dispatched.`
       );
 
       // Refresh session state to show locked banner
@@ -275,11 +260,10 @@ export default function SessionPage({
   if (loading && !session) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center">
-        <div className="w-16 h-16 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center mx-auto mb-4 animate-spin">
+        <div className="w-16 h-16 rounded-full bg-red-950 border border-red-800 flex items-center justify-center mx-auto mb-4 animate-spin">
           <Gift className="w-8 h-8 text-amber-300" />
         </div>
-        <h2 className="text-xl font-bold text-white">Loading Santa&apos;s Workshop...</h2>
-        <p className="text-xs text-slate-400 mt-1">Preparing exchange room</p>
+        <h2 className="text-xl font-bold text-white">{t('session.loading')}</h2>
       </div>
     );
   }
@@ -288,18 +272,18 @@ export default function SessionPage({
   if (fetchError || !session) {
     return (
       <div className="max-w-md mx-auto px-4 py-24 text-center">
-        <div className="w-16 h-16 rounded-full bg-red-950/70 border border-red-700/60 flex items-center justify-center mx-auto mb-4 text-red-400">
+        <div className="w-16 h-16 rounded-full bg-red-950 border border-red-700 flex items-center justify-center mx-auto mb-4 text-red-400">
           <AlertCircle className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Exchange Not Found</h2>
+        <h2 className="text-2xl font-bold text-white mb-2">{t('session.notFound')}</h2>
         <p className="text-sm text-slate-300 mb-6">
-          {fetchError || 'This Secret Santa room does not exist or has expired.'}
+          {fetchError || 'This Secret Santa room does not exist.'}
         </p>
         <Link
           href="/"
-          className="inline-flex items-center space-x-2 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow transition hover:scale-105"
+          className="inline-flex items-center space-x-2 bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2.5 rounded-xl shadow transition hover:scale-105"
         >
-          <span>Return to Home</span>
+          <span>{t('session.backHome')}</span>
         </Link>
       </div>
     );
@@ -310,21 +294,21 @@ export default function SessionPage({
     return (
       <div className="max-w-md mx-auto px-4 py-16 animate-fadeIn">
         <div className="glass-panel-gold rounded-2xl p-6 sm:p-8 shadow-2xl border border-amber-500/30 text-center">
-          <div className="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center mx-auto mb-4 text-amber-300">
+          <div className="w-16 h-16 rounded-full bg-amber-950 border border-amber-700 flex items-center justify-center mx-auto mb-4 text-amber-300">
             <Lock className="w-8 h-8" />
           </div>
 
           <h2 className="text-2xl font-black text-white mb-1">{session.title}</h2>
           <p className="text-xs text-amber-300 font-medium uppercase tracking-wider mb-6">
-            🔒 Password Protected Exchange
+            🔒 {t('session.passwordProtected')}
           </p>
 
           <p className="text-xs sm:text-sm text-slate-300 mb-6">
-            The organizer has set a holiday password for this exchange. Please enter it below to join the workshop.
+            {t('session.gateDesc')}
           </p>
 
           {unlockError && (
-            <div className="mb-5 p-3 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs flex items-center justify-center space-x-2">
+            <div className="mb-5 p-3 rounded-xl bg-red-950 border border-red-800 text-red-200 text-xs flex items-center justify-center space-x-2">
               <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400" />
               <span>{unlockError}</span>
             </div>
@@ -337,21 +321,21 @@ export default function SessionPage({
               autoFocus
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
-              placeholder="Enter room password"
+              placeholder={t('session.gatePlaceholder')}
               className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-center text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 font-medium"
             />
 
             <button
               type="submit"
               disabled={isUnlocking}
-              className="w-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2 disabled:opacity-50"
+              className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-2 disabled:opacity-50"
             >
               {isUnlocking ? (
-                <span>Checking Key...</span>
+                <span>{t('session.gateCheckingBtn')}</span>
               ) : (
                 <>
                   <Unlock className="w-4 h-4" />
-                  <span>Unlock Exchange</span>
+                  <span>{t('session.gateUnlockBtn')}</span>
                 </>
               )}
             </button>
@@ -359,7 +343,7 @@ export default function SessionPage({
 
           <div className="mt-6 pt-4 border-t border-white/10">
             <Link href="/" className="text-xs text-slate-400 hover:text-white transition">
-              ← Back to Secret Santa Home
+              {t('session.backHome')}
             </Link>
           </div>
         </div>
@@ -381,8 +365,8 @@ export default function SessionPage({
               <span
                 className={`inline-flex items-center space-x-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${
                   isLocked
-                    ? 'bg-amber-950/80 text-amber-300 border border-amber-800/60'
-                    : 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/60'
+                    ? 'bg-amber-950 text-amber-300 border border-amber-800'
+                    : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                 }`}
               >
                 <span
@@ -390,13 +374,13 @@ export default function SessionPage({
                     isLocked ? 'bg-amber-400' : 'bg-emerald-400 animate-pulse'
                   }`}
                 />
-                <span>{isLocked ? 'Draw Complete • Locked' : 'Accepting Participants'}</span>
+                <span>{isLocked ? t('session.statusLocked') : t('session.statusOpen')}</span>
               </span>
 
               {session.isPasswordProtected && (
                 <span className="inline-flex items-center space-x-1 text-xs font-medium px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
                   <Lock className="w-3 h-3 text-amber-400" />
-                  <span>Password Protected</span>
+                  <span>{t('session.passwordProtected')}</span>
                 </span>
               )}
             </div>
@@ -407,21 +391,23 @@ export default function SessionPage({
 
             <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-300 pt-1">
               {session.budget && (
-                <div className="flex items-center space-x-1.5 bg-slate-900/60 px-3 py-1 rounded-lg border border-white/5">
+                <div className="flex items-center space-x-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-white/5">
                   <DollarSign className="w-4 h-4 text-amber-400" />
-                  <span>Budget: <strong className="text-white">{session.budget}</strong></span>
+                  <span>{t('session.budget')} <strong className="text-white">{session.budget}</strong></span>
                 </div>
               )}
               {session.exchangeDate && (
-                <div className="flex items-center space-x-1.5 bg-slate-900/60 px-3 py-1 rounded-lg border border-white/5">
+                <div className="flex items-center space-x-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-white/5">
                   <Calendar className="w-4 h-4 text-emerald-400" />
-                  <span>Exchange: <strong className="text-white">{session.exchangeDate}</strong></span>
+                  <span>{t('session.exchangeDate')} <strong className="text-white">{session.exchangeDate}</strong></span>
                 </div>
               )}
-              <div className="flex items-center space-x-1.5 bg-slate-900/60 px-3 py-1 rounded-lg border border-white/5">
+              <div className="flex items-center space-x-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-white/5">
                 <Users className="w-4 h-4 text-blue-400" />
                 <span>
-                  <strong className="text-white">{participantCount}</strong> {participantCount === 1 ? 'Elf' : 'Elves'} Joined
+                  {participantCount === 1
+                    ? t('session.oneElfJoined')
+                    : t('session.elvesJoined', { count: participantCount })}
                 </span>
               </div>
             </div>
@@ -434,12 +420,12 @@ export default function SessionPage({
               className="inline-flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl border border-white/10 transition shadow-sm"
             >
               <Key className="w-3.5 h-3.5 text-amber-400" />
-              <span>Host Controls</span>
+              <span>{t('session.hostControls')}</span>
             </button>
             <button
               onClick={fetchSession}
-              title="Refresh Roster"
-              className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-white border border-white/5 transition"
+              title={t('session.refresh')}
+              className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-white/5 transition"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -448,33 +434,40 @@ export default function SessionPage({
 
         {/* Shareable Link Bar */}
         <div className="mt-6 pt-5 border-t border-white/10">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-            Share this link with your friends & family:
-          </label>
-          <div className="flex items-center space-x-2">
-            <div className="flex-1 flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2.5 overflow-hidden">
-              <span className="text-xs sm:text-sm font-mono text-slate-300 truncate select-all">
-                {typeof window !== 'undefined'
-                  ? `${window.location.origin}${getBasePath()}/session/${sessionId}`
-                  : `/session/${sessionId}`}
-              </span>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center space-x-1 flex-shrink-0">
+              <Gift className="w-3.5 h-3.5 text-amber-400" />
+              <span>{t('session.shareBarLabel')}</span>
+            </span>
+            <div className="flex-1 flex items-center space-x-2">
+              <input
+                type="text"
+                readOnly
+                value={
+                  typeof window !== 'undefined'
+                    ? `${window.location.origin}${getBasePath()}/session/${sessionId}`
+                    : `/session/${sessionId}`
+                }
+                className="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-slate-300 font-mono truncate"
+              />
+              <button
+                type="button"
+                onClick={copyShareLink}
+                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-white/10 flex items-center space-x-1.5 transition flex-shrink-0"
+              >
+                {copiedLink ? (
+                  <>
+                    <Check className="w-4 h-4 text-emerald-400" />
+                    <span className="text-emerald-400">{t('session.copied')}</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 text-slate-300" />
+                    <span>{t('session.copyLink')}</span>
+                  </>
+                )}
+              </button>
             </div>
-            <button
-              onClick={copyShareLink}
-              className="bg-red-700 hover:bg-red-600 text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-1.5 flex-shrink-0"
-            >
-              {copiedLink ? (
-                <>
-                  <Check className="w-4 h-4 text-emerald-300" />
-                  <span>Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4" />
-                  <span>Copy Link</span>
-                </>
-              )}
-            </button>
           </div>
         </div>
       </section>
@@ -483,15 +476,15 @@ export default function SessionPage({
       {isLocked && (
         <section className="glass-panel-gold rounded-2xl p-6 sm:p-8 border border-amber-500/40 shadow-xl relative overflow-hidden animate-fadeIn">
           <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
-            <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-3xl flex-shrink-0">
+            <div className="w-16 h-16 rounded-2xl bg-amber-950 border border-amber-700 flex items-center justify-center text-3xl flex-shrink-0">
               🎄
             </div>
             <div className="flex-1">
               <h2 className="text-xl sm:text-2xl font-black text-white">
-                Submissions have ended! The Secret Santa draw has taken place 🎅
+                {t('session.lockedBannerTitle')}
               </h2>
-              <p className="text-xs sm:text-sm text-amber-200/90 mt-1 leading-relaxed">
-                Santa&apos;s workshop has paired everyone into a secret gift circle. Check your inbox for your recipient, personal rhyming poem, and AI gift ideas!
+              <p className="text-xs sm:text-sm text-amber-200 mt-1 leading-relaxed">
+                {t('session.lockedBannerDesc')}
               </p>
             </div>
           </div>
@@ -504,26 +497,26 @@ export default function SessionPage({
         {!isLocked ? (
           <section className="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-7 border border-white/10 shadow-xl">
             <div className="flex items-center space-x-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-400">
+              <div className="w-10 h-10 rounded-xl bg-red-950 border border-red-800 flex items-center justify-center text-red-400">
                 <Gift className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">Join This Secret Santa</h2>
+                <h2 className="text-xl font-bold text-white">{t('session.joinTitle')}</h2>
                 <p className="text-xs text-slate-400">
-                  Fill in your details below to participate in the draw
+                  {t('session.joinDesc')}
                 </p>
               </div>
             </div>
 
             {joinError && (
-              <div className="mb-5 p-3.5 rounded-xl bg-red-950/70 border border-red-800 text-red-200 text-xs flex items-start space-x-2">
+              <div className="mb-5 p-3.5 rounded-xl bg-red-950 border border-red-800 text-red-200 text-xs flex items-start space-x-2">
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <span>{joinError}</span>
               </div>
             )}
 
             {joinSuccess && (
-              <div className="mb-5 p-4 rounded-xl bg-emerald-950/70 border border-emerald-800 text-emerald-200 text-xs sm:text-sm flex items-start space-x-2.5">
+              <div className="mb-5 p-4 rounded-xl bg-emerald-950 border border-emerald-800 text-emerald-200 text-xs sm:text-sm flex items-start space-x-2.5">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                 <span>{joinSuccess}</span>
               </div>
@@ -533,28 +526,28 @@ export default function SessionPage({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                    First Name <span className="text-red-400">*</span>
+                    {t('session.firstName')} <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Alice"
+                    placeholder={t('session.firstNamePlaceholder')}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                    Last Name <span className="text-red-400">*</span>
+                    {t('session.lastName')} <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={surname}
                     onChange={(e) => setSurname(e.target.value)}
-                    placeholder="e.g. Smith"
+                    placeholder={t('session.lastNamePlaceholder')}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
                   />
                 </div>
@@ -562,10 +555,10 @@ export default function SessionPage({
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center justify-between">
-                  <span>Email Address <span className="text-red-400">*</span></span>
+                  <span>{t('session.email')} <span className="text-red-400">*</span></span>
                   <span className="text-[10px] text-emerald-400 flex items-center space-x-1">
                     <ShieldCheck className="w-3 h-3" />
-                    <span>Never displayed publicly</span>
+                    <span>{t('session.emailPrivacyBadge')}</span>
                   </span>
                 </label>
                 <input
@@ -573,58 +566,61 @@ export default function SessionPage({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="alice@example.com"
+                  placeholder={t('session.emailPlaceholder')}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
                 />
                 <p className="text-[11px] text-slate-400 mt-1">
-                  Your email will only be used to send your secret match reveal.
+                  {t('session.emailPrivacyHint')}
                 </p>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center justify-between">
-                  <span>Wishlist / Gift Preferences (Optional)</span>
+                  <span>{t('session.wishlist')}</span>
                   <span className="text-[10px] text-amber-300 flex items-center space-x-1">
                     <Sparkles className="w-3 h-3" />
-                    <span>Santa AI will use this</span>
+                    <span>{t('session.wishlistAiBadge')}</span>
                   </span>
                 </label>
                 <textarea
                   rows={2}
                   value={wishlist}
                   onChange={(e) => setWishlist(e.target.value)}
-                  placeholder="e.g. Warm wool socks, dark roast coffee beans, fantasy books..."
+                  placeholder={t('session.wishlistPlaceholder')}
                   className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500 resize-none"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Hobbies & Interests (Optional)
+                  {t('session.hobbies')}
                 </label>
                 <input
                   type="text"
                   value={hobbies}
                   onChange={(e) => setHobbies(e.target.value)}
-                  placeholder="e.g. Baking sourdough, photography, hiking, board games"
+                  placeholder={t('session.hobbiesPlaceholder')}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500"
                 />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  {t('session.hobbiesHint')}
+                </p>
               </div>
 
               <button
                 type="submit"
                 disabled={isJoining}
-                className="w-full mt-2 bg-gradient-to-r from-red-600 via-red-700 to-rose-700 hover:from-red-500 hover:to-red-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-red-950/50 border border-red-500/30 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+                className="w-full mt-2 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-red-950/50 border border-red-500 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
               >
                 {isJoining ? (
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>Registering with Santa...</span>
+                    <span>{t('session.joiningBtn')}</span>
                   </div>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>🎁 Join Secret Santa Exchange</span>
+                    <span>{t('session.joinBtn')}</span>
                   </>
                 )}
               </button>
@@ -634,23 +630,23 @@ export default function SessionPage({
           <section className="lg:col-span-7 glass-panel rounded-2xl p-6 sm:p-7 border border-white/10 shadow-xl space-y-4">
             <h3 className="font-bold text-lg text-white flex items-center space-x-2">
               <Gift className="w-5 h-5 text-amber-400" />
-              <span>Exchange Summary</span>
+              <span>{t('session.summaryTitle')}</span>
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              This exchange has locked with <strong>{participantCount}</strong> participating elves. Each participant has been emailed their secret recipient.
+              {t('session.summaryDesc', { count: participantCount })}
             </p>
-            <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5 space-y-2 text-xs text-slate-300">
+            <div className="p-4 rounded-xl bg-slate-900 border border-white/5 space-y-2 text-xs text-slate-300">
               <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-slate-400">Total Matched Pairs:</span>
+                <span className="text-slate-400">{t('session.totalPairs')}</span>
                 <span className="font-bold text-white">{participantCount}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-slate-400">Matching Mode:</span>
-                <span className="font-medium text-emerald-400">Cyclic Derangement (Zero Self-Matches)</span>
+                <span className="text-slate-400">{t('session.matchingMode')}</span>
+                <span className="font-medium text-emerald-400">{t('session.matchingModeVal')}</span>
               </div>
               {session.exchangeDate && (
                 <div className="flex justify-between py-1">
-                  <span className="text-slate-400">Exchange Day:</span>
+                  <span className="text-slate-400">{t('session.exchangeDay')}</span>
                   <span className="font-bold text-amber-300">{session.exchangeDate}</span>
                 </div>
               )}
@@ -663,40 +659,45 @@ export default function SessionPage({
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center space-x-2">
               <Users className="w-5 h-5 text-emerald-400" />
-              <h2 className="text-xl font-bold text-white">Workshop Roster</h2>
+              <h2 className="text-xl font-bold text-white">{t('session.rosterTitle')}</h2>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-800/60">
-              {participantCount} {participantCount === 1 ? 'Elf' : 'Elves'}
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800">
+              {participantCount === 1 ? t('session.oneElfJoined') : t('session.elvesJoined', { count: participantCount })}
             </span>
           </div>
 
-          <div className="space-y-2.5 max-h-[480px] overflow-y-auto pr-1">
+          <p className="text-xs text-slate-400 mb-4">
+            {t('session.rosterSubtitle')}
+          </p>
+
+          <div className="space-y-2 max-h-[460px] overflow-y-auto pr-1">
             {participants.length === 0 ? (
-              <div className="text-center py-10 px-4 border border-dashed border-slate-700 rounded-xl">
-                <p className="text-3xl mb-2">🧝</p>
-                <p className="text-sm font-semibold text-slate-300">No elves signed up yet</p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Be the first to join using the form!
+              <div className="text-center py-10 px-4 rounded-xl bg-slate-900/60 border border-dashed border-slate-800">
+                <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center mx-auto mb-2 text-slate-400">
+                  🎅
+                </div>
+                <p className="text-xs text-slate-300">
+                  {t('session.emptyRoster')}
                 </p>
               </div>
             ) : (
               participants.map((p, idx) => (
                 <div
                   key={p.id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 hover:border-white/10 transition"
+                  className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-white/5 hover:border-white/10 transition"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-900/40 border border-emerald-700/40 text-emerald-300 flex items-center justify-center font-bold text-xs">
-                      #{idx + 1}
+                    <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400 text-xs font-bold">
+                      {idx + 1}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-white">
+                      <p className="font-semibold text-white text-sm">
                         {p.name} {p.surname}
                       </p>
-                      <p className="text-[11px] text-slate-400 flex items-center space-x-1">
-                        <Clock className="w-3 h-3 text-slate-500" />
+                      <p className="text-[10px] text-slate-400 flex items-center space-x-1">
+                        <Clock className="w-3 h-3 text-slate-400" />
                         <span>
-                          Joined {new Date(p.joinedAt).toLocaleDateString(undefined, {
+                          {new Date(p.joinedAt).toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', {
                             month: 'short',
                             day: 'numeric',
                           })}
@@ -710,9 +711,9 @@ export default function SessionPage({
             )}
           </div>
 
-          <div className="mt-5 p-3 rounded-xl bg-slate-900/40 border border-white/5 flex items-center space-x-2 text-[11px] text-slate-400">
+          <div className="mt-5 p-3 rounded-xl bg-slate-900 border border-white/5 flex items-center space-x-2 text-[11px] text-slate-400">
             <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-            <span>Emails and wishlists are strictly concealed for privacy.</span>
+            <span>{t('session.privacyFooter')}</span>
           </div>
         </section>
       </div>
@@ -723,12 +724,12 @@ export default function SessionPage({
           <div className="glass-panel-red max-w-lg w-full rounded-2xl p-6 sm:p-8 shadow-2xl border border-red-500/40 relative">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center space-x-2.5">
-                <div className="w-10 h-10 rounded-xl bg-red-600/30 border border-red-500/40 flex items-center justify-center text-amber-300">
+                <div className="w-10 h-10 rounded-xl bg-red-950 border border-red-700 flex items-center justify-center text-amber-300">
                   <Key className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-white">Host Controls</h3>
-                  <p className="text-xs text-red-200">Manage Santa draw & session lock</p>
+                  <h3 className="text-xl font-black text-white">{t('session.hostModalTitle')}</h3>
+                  <p className="text-xs text-red-200">{t('session.hostModalDesc')}</p>
                 </div>
               </div>
               <button
@@ -744,14 +745,14 @@ export default function SessionPage({
             </div>
 
             {drawError && (
-              <div className="mb-4 p-3.5 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs flex items-start space-x-2">
+              <div className="mb-4 p-3.5 rounded-xl bg-red-950 border border-red-800 text-red-200 text-xs flex items-start space-x-2">
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <span>{drawError}</span>
               </div>
             )}
 
             {drawSuccess && (
-              <div className="mb-4 p-4 rounded-xl bg-emerald-950/80 border border-emerald-800 text-emerald-200 text-xs flex items-start space-x-2">
+              <div className="mb-4 p-4 rounded-xl bg-emerald-950 border border-emerald-800 text-emerald-200 text-xs flex items-start space-x-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                 <span>{drawSuccess}</span>
               </div>
@@ -760,33 +761,29 @@ export default function SessionPage({
             <div className="space-y-4 mb-6">
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Host Admin Key
+                  {t('session.hostKeyLabel')}
                 </label>
                 <input
                   type="text"
                   value={adminKey}
                   onChange={(e) => setAdminKey(e.target.value)}
-                  placeholder="Paste your 32-character admin key"
+                  placeholder={t('session.hostKeyPlaceholder')}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs sm:text-sm focus:outline-none focus:border-red-500"
                 />
                 <p className="text-[11px] text-slate-400 mt-1">
-                  Only the host with this key can initiate the draw.
+                  {t('session.hostKeyHint')}
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1.5 text-xs text-slate-300">
+              <div className="p-3.5 rounded-xl bg-slate-900 border border-white/5 space-y-1.5 text-xs text-slate-300">
                 <div className="flex justify-between">
                   <span>Current Participants:</span>
                   <strong className="text-white">{participantCount}</strong>
                 </div>
                 <div className="flex justify-between">
-                  <span>Minimum Required:</span>
-                  <span className="text-amber-300">2 participants</span>
-                </div>
-                <div className="flex justify-between">
                   <span>Status:</span>
                   <span className={isLocked ? 'text-amber-400' : 'text-emerald-400'}>
-                    {isLocked ? 'Locked (Draw finished)' : 'Open for registrations'}
+                    {isLocked ? t('session.statusLocked') : t('session.statusOpen')}
                   </span>
                 </div>
               </div>
@@ -798,24 +795,24 @@ export default function SessionPage({
                 type="button"
                 disabled={isLocked || participantCount < 2 || isDrawing}
                 onClick={() => setShowConfirmDraw(true)}
-                className="w-full bg-gradient-to-r from-red-600 via-red-700 to-rose-700 hover:from-red-500 hover:to-red-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg border border-red-500/40 flex items-center justify-center space-x-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg border border-red-500 flex items-center justify-center space-x-2 transition disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Sparkles className="w-4 h-4 text-amber-300" />
                 <span>
                   {isLocked
-                    ? 'Draw Already Completed'
+                    ? t('session.drawAlreadyCompleted')
                     : participantCount < 2
-                    ? 'Need At Least 2 Elves to Draw'
-                    : '🎅 Start Secret Santa Draw!'}
+                    ? t('session.needMoreElves', { count: participantCount })
+                    : t('session.startDrawBtn')}
                 </span>
               </button>
             ) : (
-              <div className="p-4 rounded-xl bg-red-950/80 border border-red-600 space-y-3">
+              <div className="p-4 rounded-xl bg-red-950 border border-red-600 space-y-3">
                 <p className="text-xs font-bold text-white">
-                  ⚠️ Are you sure you want to start the draw now?
+                  ⚠️ {t('session.confirmTitle')}
                 </p>
                 <p className="text-[11px] text-slate-300 leading-relaxed">
-                  This action cannot be undone. Registration will be closed permanently, and emails with secret matches, custom poems, and AI gift ideas will be dispatched immediately.
+                  {t('session.confirmDesc', { count: participantCount })}
                 </p>
                 <div className="flex items-center space-x-3 pt-1">
                   <button
@@ -824,7 +821,7 @@ export default function SessionPage({
                     disabled={isDrawing}
                     className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-lg transition"
                   >
-                    Cancel
+                    {t('session.confirmCancel')}
                   </button>
                   <button
                     type="button"
@@ -835,11 +832,11 @@ export default function SessionPage({
                     {isDrawing ? (
                       <>
                         <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        <span>Matching Elves...</span>
+                        <span>{t('session.drawingBtn')}</span>
                       </>
                     ) : (
                       <>
-                        <span>Yes, Draw Names!</span>
+                        <span>{t('session.confirmYes')}</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </>
                     )}

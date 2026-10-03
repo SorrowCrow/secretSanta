@@ -75,9 +75,9 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
         <!-- Main Card Container (max-width 600px) -->
         <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);">
           
-          <!-- Festive Header with Gradient & Snow Stars -->
+          <!-- Festive Header with Solid Red & Snow Stars -->
           <tr>
-            <td style="background: linear-gradient(135deg, #991b1b 0%, #b91c1c 45%, #065f46 100%); background-color: #991b1b; padding: 36px 24px 28px 24px; text-align: center; color: #ffffff;">
+            <td style="background-color: #991b1b; padding: 36px 24px 28px 24px; text-align: center; color: #ffffff;">
               <div style="font-size: 32px; line-height: 1; margin-bottom: 12px;">
                 ✨ ❄️ 🎅 🎄 ❄️ ✨
               </div>
@@ -101,7 +101,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
               </p>
 
               <!-- Big Reveal Card -->
-              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px; background: linear-gradient(180deg, #fef2f2 0%, #fff1f2 100%); border: 2px dashed #dc2626; border-radius: 16px; text-align: center;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px; background-color: #fef2f2; border: 2px dashed #dc2626; border-radius: 16px; text-align: center;">
                 <tr>
                   <td style="padding: 24px 16px;">
                     <span style="display: inline-block; background-color: #dc2626; color: #ffffff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 12px; border-radius: 9999px; margin-bottom: 10px;">
