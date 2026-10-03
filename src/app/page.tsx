@@ -153,88 +153,121 @@ export default function HomePage() {
           <LanguageSwitch />
         </div>
 
-        {/* Big button in the middle: Styled as a red Christmas Present with yellow ribbons! */}
+        {/* Big button in the middle: Styled as an authentic, charming Christmas Present! */}
         <div className="my-auto py-10 w-full flex justify-center px-4">
           <a
             href="#create"
-            className="group relative inline-block p-10 sm:p-14 md:p-16 rounded-3xl bg-red-600 border-4 border-red-600 hover:border-yellow-400 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer max-w-3xl w-full overflow-visible"
+            className="group relative inline-block rounded-3xl bg-red-600 border-4 border-red-600 hover:border-yellow-400 shadow-2xl hover:shadow-[0_20px_45px_rgba(220,38,38,0.28)] transition-all duration-200 hover:-translate-y-1.5 active:translate-y-0 cursor-pointer max-w-xl sm:max-w-2xl w-full overflow-visible"
           >
-            {/* Christmas Ribbon Bow Knot on Top (Yellow) */}
-            <div className="absolute -top-8 sm:-top-11 left-1/2 -translate-x-1/2 select-none pointer-events-none group-hover:scale-110 transition-transform z-20">
+            {/* Christmas Ribbon Bow Knot on Top (Lush Yellow Bow) */}
+            <div className="absolute -top-11 sm:-top-16 left-1/2 -translate-x-1/2 select-none pointer-events-none group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200 z-30">
               <svg
-                viewBox="0 0 100 60"
-                className="w-20 sm:w-28 h-auto drop-shadow-md"
+                viewBox="0 0 160 100"
+                className="w-32 sm:w-44 h-auto drop-shadow-md"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Left Loop */}
-                <path
-                  d="M50 30 C30 10, 5 15, 10 32 C15 48, 38 38, 50 32"
-                  fill="#FACC15"
-                  stroke="#CA8A04"
-                  strokeWidth="2.5"
-                />
-                <path
-                  d="M45 28 C32 18, 16 22, 18 32 C20 40, 36 34, 45 30"
-                  fill="#EAB308"
-                  opacity="0.4"
-                />
-                {/* Right Loop */}
-                <path
-                  d="M50 30 C70 10, 95 15, 90 32 C85 48, 62 38, 50 32"
-                  fill="#FACC15"
-                  stroke="#CA8A04"
-                  strokeWidth="2.5"
-                />
-                <path
-                  d="M55 28 C68 18, 84 22, 82 32 C80 40, 64 34, 55 30"
-                  fill="#EAB308"
-                  opacity="0.4"
-                />
                 {/* Left Ribbon Tail */}
                 <path
-                  d="M44 32 C38 42, 28 50, 22 56 L32 54 L38 58 C42 48, 46 38, 48 32 Z"
+                  d="M72 48 C62 62, 50 78, 38 94 L52 90 L60 98 C66 82, 72 66, 76 50 Z"
                   fill="#FACC15"
                   stroke="#CA8A04"
                   strokeWidth="2"
+                  strokeLinejoin="round"
                 />
                 {/* Right Ribbon Tail */}
                 <path
-                  d="M56 32 C62 42, 72 50, 78 56 L68 54 L62 58 C58 48, 54 38, 52 32 Z"
+                  d="M88 48 C98 62, 110 78, 122 94 L108 90 L100 98 C94 82, 88 66, 84 50 Z"
                   fill="#FACC15"
                   stroke="#CA8A04"
                   strokeWidth="2"
+                  strokeLinejoin="round"
+                />
+                {/* Left Outer Loop */}
+                <path
+                  d="M80 44 C55 12, 16 16, 20 40 C24 60, 60 52, 78 48 Z"
+                  fill="#FACC15"
+                  stroke="#CA8A04"
+                  strokeWidth="2.5"
+                  strokeLinejoin="round"
+                />
+                {/* Left Inner Fold */}
+                <path
+                  d="M70 42 C52 24, 30 28, 34 42 C38 52, 58 48, 70 44 Z"
+                  fill="#EAB308"
+                  opacity="0.5"
+                />
+                {/* Right Outer Loop */}
+                <path
+                  d="M80 44 C105 12, 144 16, 140 40 C136 60, 100 52, 82 48 Z"
+                  fill="#FACC15"
+                  stroke="#CA8A04"
+                  strokeWidth="2.5"
+                  strokeLinejoin="round"
+                />
+                {/* Right Inner Fold */}
+                <path
+                  d="M90 42 C108 24, 130 28, 126 42 C122 52, 102 48, 90 44 Z"
+                  fill="#EAB308"
+                  opacity="0.5"
                 />
                 {/* Center Knot */}
                 <ellipse
-                  cx="50"
-                  cy="31"
-                  rx="9"
-                  ry="8"
+                  cx="80"
+                  cy="46"
+                  rx="13"
+                  ry="11"
                   fill="#FDE047"
                   stroke="#CA8A04"
                   strokeWidth="2.5"
                 />
+                <path
+                  d="M74 42 C74 46, 75 50, 77 53"
+                  stroke="#CA8A04"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M85 41 C86 45, 86 49, 84 53"
+                  stroke="#CA8A04"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
               </svg>
             </div>
 
-            {/* Vertical Ribbon Strap (Yellow) */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-10 sm:w-14 bg-yellow-400 pointer-events-none"
-            />
+            {/* Gift Box Lid (Distinct top section with rim) */}
+            <div className="h-10 sm:h-12 bg-red-700/80 border-b-2 border-red-800/40 rounded-t-[20px] relative overflow-hidden flex items-center justify-center">
+              {/* Vertical Ribbon crossing the lid */}
+              <div
+                aria-hidden="true"
+                className="w-12 sm:w-16 h-full bg-yellow-400 border-x-2 border-yellow-500/40 pointer-events-none"
+              />
+            </div>
 
-            {/* Horizontal Ribbon Strap (Yellow) */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-10 sm:h-14 bg-yellow-400 pointer-events-none"
-            />
+            {/* Gift Box Main Body */}
+            <div className="relative py-7 sm:py-9 flex flex-col justify-center items-center overflow-hidden rounded-b-[20px]">
+              {/* Vertical Ribbon Strap running through main body */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 sm:w-16 bg-yellow-400 border-x-2 border-yellow-500/40 pointer-events-none"
+              />
 
-            {/* Content inside the present: Single-line title in black */}
-            <div className="relative z-10 flex flex-col items-center justify-center">
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-center text-black select-none">
-                {t('hero.word1')} {t('hero.word2')} {t('hero.word3')}
-              </h1>
+              {/* Horizontal Satin Ribbon Sash carrying the black title */}
+              <div
+                aria-hidden="true"
+                className="relative z-10 w-full py-4 sm:py-5 px-4 sm:px-8 bg-yellow-400 border-y-2 border-yellow-500/50 shadow-sm flex items-center justify-center"
+              >
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-center text-black select-none">
+                  {t('hero.word1')} {t('hero.word2')} {t('hero.word3')}
+                </h1>
+              </div>
+
+              {/* Box Bottom Base Rim (Flat shadow depth) */}
+              <div
+                aria-hidden="true"
+                className="h-3 bg-red-800/30 w-full absolute bottom-0 inset-x-0 pointer-events-none"
+              />
             </div>
           </a>
         </div>
