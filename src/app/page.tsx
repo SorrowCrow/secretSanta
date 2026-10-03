@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { getApiPath, getBasePath } from '@/lib/api-helper';
 import { useLanguage } from '@/lib/i18n';
+import LanguageSwitch from '@/components/LanguageSwitch';
 
 export default function HomePage() {
   const router = useRouter();
@@ -144,35 +145,43 @@ export default function HomePage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
-      {/* Hero Section: Single-line title with smaller font */}
-      <section className="text-center px-4 py-6 sm:py-10 mb-8 relative">
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-center select-none text-slate-900 flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-4 gap-y-1">
-          <span className="text-blue-600">{t('hero.word1')}</span>
-          <span className="text-red-600">{t('hero.word2')}</span>
-          <span className="text-emerald-600">{t('hero.word3')}</span>
-        </h1>
+    <div>
+      {/* First Block: Covers whole screen (min-h-screen) */}
+      <section className="min-h-screen flex flex-col justify-between items-center text-center px-4 py-6 sm:py-10 relative z-10">
+        {/* Language on top */}
+        <div className="w-full flex justify-center pt-2 sm:pt-4">
+          <LanguageSwitch />
+        </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
+        {/* Big button in the middle: Main title IS the button to room creation */}
+        <div className="my-auto py-8 w-full flex justify-center px-2">
           <a
             href="#create"
-            className="inline-flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white font-bold text-base sm:text-lg px-8 py-4 rounded-2xl shadow-sm transition active:scale-95"
+            className="group inline-flex items-center justify-center px-8 sm:px-14 py-8 sm:py-12 rounded-3xl bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-red-500 shadow-md hover:shadow-xl transition-all active:scale-95 cursor-pointer max-w-3xl"
           >
-            <Gift className="w-5 h-5 text-white" />
-            <span>{t('hero.createCta')}</span>
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-center select-none flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+              <span className="text-blue-600 group-hover:text-blue-700 transition-colors">{t('hero.word1')}</span>{' '}
+              <span className="text-red-600 group-hover:text-red-700 transition-colors">{t('hero.word2')}</span>{' '}
+              <span className="text-emerald-600 group-hover:text-emerald-700 transition-colors">{t('hero.word3')}</span>
+            </h1>
           </a>
+        </div>
+
+        {/* Small join room button at the bottom of first block */}
+        <div className="pb-8 sm:pb-12">
           <a
             href="#join"
-            className="inline-flex items-center space-x-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-base sm:text-lg px-8 py-4 rounded-2xl border-2 border-slate-200 shadow-sm transition active:scale-95"
+            className="inline-flex items-center space-x-1.5 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-300 hover:border-slate-400 px-5 py-2.5 rounded-full shadow-xs transition active:scale-95"
           >
             <span>{t('hero.joinCta')}</span>
-            <ArrowRight className="w-5 h-5 text-slate-500" />
+            <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
           </a>
         </div>
       </section>
 
       {/* Main Interactive Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
         {/* Create Exchange Card */}
         <section
           id="create"
@@ -366,6 +375,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+    </div>
 
       {/* Post-Creation Modal / Overlay */}
       {createdSession && (

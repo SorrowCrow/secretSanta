@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { getApiPath, getBasePath } from '@/lib/api-helper';
 import { useLanguage } from '@/lib/i18n';
+import LanguageSwitch from '@/components/LanguageSwitch';
 import type { PublicSession, PublicParticipant } from '@/lib/privacy';
 
 interface SessionData extends Partial<PublicSession> {
@@ -356,7 +357,10 @@ export default function SessionPage({
   const participantCount = session.participantCount ?? participants.length;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-2 sm:py-6 space-y-6">
+      {/* Top Center Language Switcher */}
+      <LanguageSwitch />
+
       {/* Session Header Card */}
       <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
