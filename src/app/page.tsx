@@ -144,6 +144,15 @@ export default function HomePage() {
     }
   };
 
+  const scrollToCenter = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      window.history.pushState(null, '', `#${targetId}`);
+    }
+  };
+
   return (
     <div>
       {/* First Block: Covers whole screen (min-h-screen) */}
@@ -157,6 +166,7 @@ export default function HomePage() {
         <div className="my-auto py-8 sm:py-10 w-full flex justify-center px-4">
           <a
             href="#create"
+            onClick={(e) => scrollToCenter(e, 'create')}
             className="group relative inline-flex flex-col items-center justify-center cursor-pointer transition-all duration-300"
           >
             {/* Big Christmas Gift Box with Bottom, Lid, Ribbon and Lines */}
@@ -292,6 +302,7 @@ export default function HomePage() {
         <div className="pb-8 sm:pb-12">
           <a
             href="#join"
+            onClick={(e) => scrollToCenter(e, 'join')}
             className="inline-flex items-center space-x-1.5 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-300 hover:border-slate-400 px-5 py-2.5 rounded-full shadow-xs transition active:scale-95"
           >
             <span>{t('hero.joinCta')}</span>
