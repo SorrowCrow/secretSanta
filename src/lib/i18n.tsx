@@ -22,6 +22,7 @@ export const translations: Record<Locale, Translations> = {
     'hero.word1': 'Organize',
     'hero.word2': 'Secret',
     'hero.word3': 'Santa',
+    'hero.unwrapHint': '🎁 Click to unwrap & create room',
     'hero.createCta': 'Create Exchange Room',
     'hero.joinCta': 'Join Existing Room',
 
@@ -166,6 +167,7 @@ export const translations: Record<Locale, Translations> = {
     'hero.word1': 'Организуйте',
     'hero.word2': 'Тайного',
     'hero.word3': 'Санту',
+    'hero.unwrapHint': '🎁 Нажмите, чтобы открыть и создать',
     'hero.createCta': 'Создать комнату',
     'hero.joinCta': 'Войти в комнату',
 

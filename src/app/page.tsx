@@ -153,17 +153,47 @@ export default function HomePage() {
           <LanguageSwitch />
         </div>
 
-        {/* Big button in the middle: Main title IS the button to room creation */}
-        <div className="my-auto py-8 w-full flex justify-center px-2">
+        {/* Big button in the middle: Styled as a festive Christmas Present! */}
+        <div className="my-auto py-10 w-full flex justify-center px-4">
           <a
             href="#create"
-            className="group inline-flex items-center justify-center px-8 sm:px-14 py-8 sm:py-12 rounded-3xl bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-red-500 shadow-md hover:shadow-xl transition-all active:scale-95 cursor-pointer max-w-3xl"
+            className="group relative inline-block p-8 sm:p-12 md:p-14 rounded-3xl bg-white hover:bg-red-50/20 border-4 border-red-600 hover:border-red-700 shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer max-w-3xl w-full"
           >
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-center select-none flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-              <span className="text-blue-600 group-hover:text-blue-700 transition-colors">{t('hero.word1')}</span>{' '}
-              <span className="text-red-600 group-hover:text-red-700 transition-colors">{t('hero.word2')}</span>{' '}
-              <span className="text-emerald-600 group-hover:text-emerald-700 transition-colors">{t('hero.word3')}</span>
-            </h1>
+            {/* Christmas Ribbon Bow Knot on Top */}
+            <div className="absolute -top-7 sm:-top-9 left-1/2 -translate-x-1/2 text-4xl sm:text-6xl select-none pointer-events-none group-hover:scale-110 transition-transform filter drop-shadow-sm">
+              🎀
+            </div>
+
+            {/* Vertical Ribbon Band */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 sm:w-12 bg-red-600/10 border-x-2 border-red-600/25 pointer-events-none"
+            />
+
+            {/* Horizontal Ribbon Band */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-8 sm:h-12 bg-red-600/10 border-y-2 border-red-600/25 pointer-events-none"
+            />
+
+            {/* Gift Tag in top corner */}
+            <div className="absolute -top-3 right-6 sm:right-10 bg-amber-400 text-amber-950 text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs border border-amber-500">
+              🏷️ {t('hero.word3')}
+            </div>
+
+            {/* Content inside the present: Single-line title with smaller font */}
+            <div className="relative z-10 flex flex-col items-center justify-center">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-center select-none flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+                <span className="text-blue-600 group-hover:text-blue-700 transition-colors">{t('hero.word1')}</span>{' '}
+                <span className="text-red-600 group-hover:text-red-700 transition-colors">{t('hero.word2')}</span>{' '}
+                <span className="text-emerald-600 group-hover:text-emerald-700 transition-colors">{t('hero.word3')}</span>
+              </h1>
+
+              <span className="inline-flex items-center space-x-1.5 mt-4 text-xs sm:text-sm font-bold text-red-600 group-hover:text-red-700 transition-colors">
+                <span>{t('hero.unwrapHint')}</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </div>
           </a>
         </div>
 
