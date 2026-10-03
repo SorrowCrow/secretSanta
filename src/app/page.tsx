@@ -153,107 +153,138 @@ export default function HomePage() {
           <LanguageSwitch />
         </div>
 
-        {/* Big button in the middle: Clean, iconic, beautiful Christmas Present! */}
-        <div className="my-auto py-10 w-full flex justify-center px-4">
+        {/* Main Hero: Big Christmas Present Button with writing underneath */}
+        <div className="my-auto py-8 sm:py-10 w-full flex justify-center px-4">
           <a
             href="#create"
-            className="group relative inline-flex flex-col items-center justify-center p-8 sm:p-12 md:p-14 rounded-3xl bg-red-600 border-4 border-red-600 hover:border-yellow-400 shadow-xl hover:shadow-2xl transition-all duration-200 hover:-translate-y-1.5 active:translate-y-0 cursor-pointer max-w-lg sm:max-w-xl w-full min-h-[220px] sm:min-h-[260px] overflow-visible"
+            className="group relative inline-flex flex-col items-center justify-center cursor-pointer transition-all duration-300"
           >
-            {/* Christmas Ribbon Bow on Top (Lush Yellow Bow) */}
-            <div className="absolute -top-9 sm:-top-13 left-1/2 -translate-x-1/2 select-none pointer-events-none group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200 z-20">
+            {/* Big Christmas Gift Box with Bottom, Lid, Ribbon and Lines */}
+            <div className="group-hover:scale-105 group-hover:-translate-y-2 transition-all duration-300 filter drop-shadow-xl group-hover:drop-shadow-2xl">
               <svg
-                viewBox="0 0 160 100"
-                className="w-28 sm:w-36 h-auto drop-shadow-md"
+                viewBox="0 0 320 300"
+                className="w-64 sm:w-80 md:w-96 h-auto select-none pointer-events-none"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Left Ribbon Tail */}
-                <path
-                  d="M72 48 C62 62, 50 78, 38 94 L52 90 L60 98 C66 82, 72 66, 76 50 Z"
-                  fill="#FACC15"
-                  stroke="#CA8A04"
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                />
-                {/* Right Ribbon Tail */}
-                <path
-                  d="M88 48 C98 62, 110 78, 122 94 L108 90 L100 98 C94 82, 88 66, 84 50 Z"
-                  fill="#FACC15"
-                  stroke="#CA8A04"
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                />
-                {/* Left Outer Loop */}
-                <path
-                  d="M80 44 C55 12, 16 16, 20 40 C24 60, 60 52, 78 48 Z"
-                  fill="#FACC15"
-                  stroke="#CA8A04"
-                  strokeWidth="2.5"
-                  strokeLinejoin="round"
-                />
-                {/* Left Inner Fold */}
-                <path
-                  d="M70 42 C52 24, 30 28, 34 42 C38 52, 58 48, 70 44 Z"
-                  fill="#EAB308"
-                  opacity="0.5"
-                />
-                {/* Right Outer Loop */}
-                <path
-                  d="M80 44 C105 12, 144 16, 140 40 C136 60, 100 52, 82 48 Z"
-                  fill="#FACC15"
-                  stroke="#CA8A04"
-                  strokeWidth="2.5"
-                  strokeLinejoin="round"
-                />
-                {/* Right Inner Fold */}
-                <path
-                  d="M90 42 C108 24, 130 28, 126 42 C122 52, 102 48, 90 44 Z"
-                  fill="#EAB308"
-                  opacity="0.5"
-                />
-                {/* Center Knot */}
-                <ellipse
-                  cx="80"
-                  cy="46"
-                  rx="13"
-                  ry="11"
-                  fill="#FDE047"
-                  stroke="#CA8A04"
-                  strokeWidth="2.5"
-                />
-                <path
-                  d="M74 42 C74 46, 75 50, 77 53"
-                  stroke="#CA8A04"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M85 41 C86 45, 86 49, 84 53"
-                  stroke="#CA8A04"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
+                {/* --- Bottom Box Body --- */}
+                <g>
+                  {/* Bottom Box Container (Red with yellow border on hover) */}
+                  <rect
+                    x="36"
+                    y="110"
+                    width="248"
+                    height="170"
+                    rx="14"
+                    fill="#DC2626"
+                    className="stroke-red-600 group-hover:stroke-yellow-400 transition-colors duration-200"
+                    strokeWidth="4"
+                  />
+
+                  {/* Vertical Ribbon line running down the bottom box */}
+                  <rect x="142" y="110" width="36" height="170" fill="#FACC15" />
+                  <line x1="142" y1="110" x2="142" y2="280" stroke="#CA8A04" strokeWidth="1.5" />
+                  <line x1="178" y1="110" x2="178" y2="280" stroke="#CA8A04" strokeWidth="1.5" />
+
+                  {/* Horizontal Ribbon line running across the bottom box */}
+                  <rect x="36" y="177" width="248" height="36" fill="#FACC15" />
+                  <line x1="36" y1="177" x2="284" y2="177" stroke="#CA8A04" strokeWidth="1.5" />
+                  <line x1="36" y1="213" x2="284" y2="213" stroke="#CA8A04" strokeWidth="1.5" />
+
+                  {/* Center Ribbon Intersection on Bottom */}
+                  <rect x="142" y="177" width="36" height="36" fill="#FDE047" />
+
+                  {/* Lid Overhang Shadow on Bottom Box */}
+                  <rect x="36" y="110" width="248" height="14" fill="#991B1B" opacity="0.35" />
+
+                  {/* Bottom Rim Depth Shadow */}
+                  <rect x="36" y="268" width="248" height="12" rx="6" fill="#7F1D1D" opacity="0.25" />
+                </g>
+
+                {/* --- Box Lid (Slightly wider with overhanging edges) --- */}
+                <g>
+                  {/* Lid Container (Red with yellow border on hover) */}
+                  <rect
+                    x="20"
+                    y="60"
+                    width="280"
+                    height="52"
+                    rx="12"
+                    fill="#DC2626"
+                    className="stroke-red-600 group-hover:stroke-yellow-400 transition-colors duration-200"
+                    strokeWidth="4"
+                  />
+
+                  {/* Vertical Ribbon line running across the lid */}
+                  <rect x="142" y="60" width="36" height="52" fill="#FACC15" />
+                  <line x1="142" y1="60" x2="142" y2="112" stroke="#CA8A04" strokeWidth="1.5" />
+                  <line x1="178" y1="60" x2="178" y2="112" stroke="#CA8A04" strokeWidth="1.5" />
+
+                  {/* Lid Horizontal Lip Line */}
+                  <line x1="20" y1="104" x2="300" y2="104" stroke="#991B1B" strokeWidth="2" opacity="0.5" />
+                </g>
+
+                {/* --- Ribbon Bow on Top of the Lid --- */}
+                <g className="group-hover:scale-105 group-hover:-translate-y-1 transition-transform duration-200 origin-bottom">
+                  {/* Left Ribbon Tail */}
+                  <path
+                    d="M148 50 C136 66, 122 84, 108 102 L124 98 L132 106 C140 88, 146 70, 152 52 Z"
+                    fill="#FACC15"
+                    stroke="#CA8A04"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  {/* Right Ribbon Tail */}
+                  <path
+                    d="M172 50 C184 66, 198 84, 212 102 L196 98 L188 106 C180 88, 174 70, 168 52 Z"
+                    fill="#FACC15"
+                    stroke="#CA8A04"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+
+                  {/* Left Outer Loop */}
+                  <path
+                    d="M160 46 C128 10, 80 14, 86 42 C92 64, 136 56, 158 50 Z"
+                    fill="#FACC15"
+                    stroke="#CA8A04"
+                    strokeWidth="2.5"
+                    strokeLinejoin="round"
+                  />
+                  {/* Left Inner Fold */}
+                  <path
+                    d="M148 44 C126 24, 98 28, 104 44 C110 54, 134 50, 148 46 Z"
+                    fill="#EAB308"
+                    opacity="0.5"
+                  />
+
+                  {/* Right Outer Loop */}
+                  <path
+                    d="M160 46 C192 10, 240 14, 234 42 C228 64, 184 56, 162 50 Z"
+                    fill="#FACC15"
+                    stroke="#CA8A04"
+                    strokeWidth="2.5"
+                    strokeLinejoin="round"
+                  />
+                  {/* Right Inner Fold */}
+                  <path
+                    d="M172 44 C194 24, 222 28, 216 44 C210 54, 186 50, 172 46 Z"
+                    fill="#EAB308"
+                    opacity="0.5"
+                  />
+
+                  {/* Center Knot */}
+                  <ellipse cx="160" cy="48" rx="14" ry="12" fill="#FDE047" stroke="#CA8A04" strokeWidth="2.5" />
+                  <path d="M154 44 C154 48, 155 52, 157 55" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M166 43 C167 47, 167 51, 165 55" stroke="#CA8A04" strokeWidth="1.5" strokeLinecap="round" />
+                </g>
               </svg>
             </div>
 
-            {/* Vertical Ribbon Strap (Yellow) */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 sm:w-16 bg-yellow-400 pointer-events-none"
-            />
-
-            {/* Horizontal Ribbon Strap (Yellow) */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-12 sm:h-16 bg-yellow-400 pointer-events-none"
-            />
-
-            {/* Center Ribbon Hub with Title: 100% black text on continuous yellow ribbon */}
-            <div className="relative z-10 bg-yellow-400 px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-xs border border-yellow-500/40 max-w-full">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-center text-black select-none leading-snug">
-                {t('hero.word1')} {t('hero.word2')} {t('hero.word3')}
-              </h1>
-            </div>
+            {/* Writing strictly UNDER the box */}
+            <h1 className="mt-6 sm:mt-8 text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-black text-center select-none group-hover:text-red-600 transition-colors">
+              {t('hero.word1')} {t('hero.word2')} {t('hero.word3')}
+            </h1>
           </a>
         </div>
 
