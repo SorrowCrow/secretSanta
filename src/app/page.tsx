@@ -318,7 +318,7 @@ export default function HomePage() {
         {/* Create Exchange Card */}
         <section
           id="create"
-          className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm relative overflow-hidden"
+          className="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-10 border border-slate-200 shadow-sm relative overflow-hidden"
         >
           <div className="flex items-center space-x-3.5 mb-8">
             <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-600">
@@ -341,8 +341,8 @@ export default function HomePage() {
             </div>
           )}
 
-          <form onSubmit={handleCreate} className="space-y-5">
-            <div>
+          <form onSubmit={handleCreate} className="space-y-5 w-full min-w-0">
+            <div className="w-full min-w-0">
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                 {t('create.titleLabel')} <span className="text-red-500">*</span>
               </label>
@@ -352,26 +352,26 @@ export default function HomePage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder={t('create.titlePlaceholder')}
-                className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition"
+                className="w-full max-w-full min-w-0 px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition box-border"
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full min-w-0">
+              <div className="w-full min-w-0">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1">
-                  <Euro className="w-3.5 h-3.5 text-blue-600" />
-                  <span>{t('create.budgetLabel')}</span>
+                  <Euro className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                  <span className="truncate">{t('create.budgetLabel')}</span>
                 </label>
                 <input
                   type="text"
                   value={budget}
                   onChange={(e) => setBudget(e.target.value)}
                   placeholder={t('create.budgetPlaceholder')}
-                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition"
+                  className="w-full max-w-full min-w-0 px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition box-border"
                 />
               </div>
 
-              <div>
+              <div className="w-full min-w-0">
                 <label
                   htmlFor="exchange-date-input"
                   onClick={() => {
@@ -383,8 +383,8 @@ export default function HomePage() {
                   }}
                   className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1 cursor-pointer select-none"
                 >
-                  <Calendar className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>{t('create.dateLabel')}</span>
+                  <Calendar className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                  <span className="truncate">{t('create.dateLabel')}</span>
                 </label>
                 <div
                   onClick={() => {
@@ -394,7 +394,7 @@ export default function HomePage() {
                       dateInputRef.current?.focus();
                     }
                   }}
-                  className="relative cursor-pointer"
+                  className="relative w-full min-w-0 cursor-pointer"
                 >
                   <input
                     ref={dateInputRef}
@@ -407,7 +407,7 @@ export default function HomePage() {
                         e.currentTarget.showPicker();
                       } catch {}
                     }}
-                    className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm transition cursor-pointer"
+                    className="w-full max-w-full min-w-0 block px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition cursor-pointer box-border [color-scheme:light]"
                   />
                 </div>
               </div>
