@@ -352,7 +352,7 @@ export default function HomePage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder={t('create.titlePlaceholder')}
-                className="w-full max-w-full min-w-0 px-3.5 sm:px-4 py-3 sm:py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition box-border"
+                className="w-full max-w-full min-w-0 h-[52px] px-3.5 sm:px-4 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition box-border"
               />
             </div>
 
@@ -368,7 +368,7 @@ export default function HomePage() {
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
                     placeholder={t('create.budgetPlaceholder')}
-                    className="w-full max-w-full min-w-0 pr-12 pl-3.5 sm:pl-4 py-3 sm:py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition box-border"
+                    className="w-full max-w-full min-w-0 h-[52px] pr-12 pl-3.5 sm:pl-4 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm transition box-border"
                   />
                   <button
                     type="button"
@@ -424,7 +424,7 @@ export default function HomePage() {
                       dateInputRef.current?.focus();
                     }
                   }}
-                  className="relative w-full max-w-full min-w-0 cursor-pointer overflow-hidden rounded-xl border-2 border-slate-200 focus-within:border-red-600 transition bg-white"
+                  className="relative w-full max-w-full min-w-0 h-[52px] cursor-pointer overflow-hidden rounded-xl border-2 border-slate-200 focus-within:border-red-600 transition bg-white flex items-center"
                 >
                   <input
                     ref={dateInputRef}
@@ -437,7 +437,7 @@ export default function HomePage() {
                         e.currentTarget.showPicker();
                       } catch {}
                     }}
-                    className="w-full max-w-full min-w-0 block pr-10 pl-3.5 sm:pl-4 py-3 sm:py-3.5 bg-transparent border-0 text-slate-900 placeholder-slate-400 focus:outline-none text-base sm:text-sm transition cursor-pointer box-border appearance-none [-webkit-appearance:none] [color-scheme:light] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:m-0"
+                    className="w-full h-full max-w-full min-w-0 block pr-10 pl-3.5 sm:pl-4 bg-transparent border-0 text-slate-900 placeholder-slate-400 focus:outline-none text-base sm:text-sm transition cursor-pointer box-border appearance-none [-webkit-appearance:none] [color-scheme:light] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:m-0 [&::-webkit-date-and-time-value]:h-[1.5em] [&::-webkit-date-and-time-value]:min-h-[1.5em] [&::-webkit-date-and-time-value]:w-full [&::-webkit-date-and-time-value]:flex [&::-webkit-date-and-time-value]:items-center"
                   />
                   <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                     <Calendar className="w-4 h-4 text-slate-400" />
