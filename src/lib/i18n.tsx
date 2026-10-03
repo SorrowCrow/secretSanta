@@ -39,7 +39,7 @@ export const translations: Record<Locale, Translations> = {
     'create.titleLabel': 'Exchange Title',
     'create.titlePlaceholder': 'e.g. Family Holiday 2026 or Marketing Team Santa',
     'create.budgetLabel': 'Budget Limit (Optional)',
-    'create.budgetPlaceholder': 'e.g. $25, €30, 2000 ₽',
+    'create.budgetPlaceholder': 'e.g. €20, €30, €50',
     'create.budgetHint': 'Suggests gift ideas to participants',
     'create.dateLabel': 'Exchange Date (Optional)',
     'create.showAdvanced': 'Show Advanced Security & Settings',
@@ -121,6 +121,10 @@ export const translations: Record<Locale, Translations> = {
     'session.rosterSubtitle': 'Public participant list (emails hidden)',
     'session.emptyRoster': 'No elves yet. Be the first to join the workshop!',
     'session.privacyFooter': 'Strict Email Privacy: Emails are encrypted on the server and never revealed in this roster or sent to other participants.',
+    'session.removeParticipant': 'Remove participant',
+    'session.confirmRemoveParticipant': 'Are you sure you want to remove {name} from this exchange?',
+    'session.participantRemoved': 'Participant removed successfully',
+    'session.enterAdminKeyToManage': 'Please enter your Host Admin Key to manage participants:',
 
     // Password Gate Modal
     'session.gateTitle': 'Password Protected Room',
@@ -184,7 +188,7 @@ export const translations: Record<Locale, Translations> = {
     'create.titleLabel': 'Название обмена',
     'create.titlePlaceholder': 'например, Семья 2026 или Коллеги по офису',
     'create.budgetLabel': 'Лимит бюджета (необязательно)',
-    'create.budgetPlaceholder': 'например, 1500 ₽, 2000 ₽, 25$',
+    'create.budgetPlaceholder': 'например, 20 €, 30 €, 50 €',
     'create.budgetHint': 'Используется для подсказок подарков',
     'create.dateLabel': 'Дата обмена (необязательно)',
     'create.showAdvanced': 'Показать дополнительные настройки',
@@ -213,7 +217,7 @@ export const translations: Record<Locale, Translations> = {
     // Session Page
     'session.loading': 'Загрузка мастерской Санты...',
     'session.notFound': 'Комната не найдена',
-    'session.backHome': '← На главную Тайного Санты',
+    'session.backHome': '← На главную',
     'session.statusOpen': 'Приём заявок',
     'session.statusLocked': 'Жеребьёвка проведена • Закрыто',
     'session.passwordProtected': 'Защищено паролем',
@@ -266,6 +270,10 @@ export const translations: Record<Locale, Translations> = {
     'session.rosterSubtitle': 'Публичный список (email скрыты)',
     'session.emptyRoster': 'Пока никого нет. Станьте первым участником!',
     'session.privacyFooter': 'Строгая приватность email: Email адреса хранятся в безопасности на сервере и никогда не отображаются в списке.',
+    'session.removeParticipant': 'Удалить участника',
+    'session.confirmRemoveParticipant': 'Вы уверены, что хотите удалить {name} из обмена?',
+    'session.participantRemoved': 'Участник успешно удалён',
+    'session.enterAdminKeyToManage': 'Введите ключ администратора для управления участниками:',
 
     // Password Gate Modal
     'session.gateTitle': 'Комната защищена паролем',

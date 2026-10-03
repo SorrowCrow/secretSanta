@@ -12,7 +12,8 @@ export async function POST(
   try {
     const { id } = await params;
     const body = await req.json();
-    const { adminKey } = body || {};
+    const { adminKey, locale = 'en' } = body || {};
+    const safeLocale: 'en' | 'ru' = locale === 'ru' ? 'ru' : 'en';
 
     if (!adminKey || typeof adminKey !== 'string') {
       return NextResponse.json(
@@ -77,12 +78,13 @@ export async function POST(
     await Promise.all(
       pairs.map(async ({ giver, receiver }) => {
         const [festivePoem, giftIdeas] = await Promise.all([
-          generateSantaPoem(giver.name, receiver.name),
+          generateSantaPoem(giver.name, receiver.name, safeLocale),
           generateGiftIdeas(
             receiver.name,
             receiver.wishlist,
             receiver.hobbies,
-            session.budget
+            session.budget,
+            safeLocale
           ),
         ]);
 
@@ -98,6 +100,7 @@ export async function POST(
           exchangeDate: session.exchangeDate,
           festivePoem,
           giftIdeas,
+          locale: safeLocale,
         });
 
         const emailSentAt = emailResult.success ? new Date() : null;

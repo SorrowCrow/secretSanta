@@ -12,6 +12,7 @@ export interface SendSecretSantaMatchEmailParams {
   exchangeDate?: string | null;
   festivePoem?: string | null;
   giftIdeas?: string[] | null;
+  locale?: 'en' | 'ru';
 }
 
 export interface SendEmailResult {
@@ -23,6 +24,7 @@ export interface SendEmailResult {
 
 /**
  * Builds a festive, mobile-responsive HTML email template for Secret Santa match reveal.
+ * Supports English ('en') and Russian ('ru').
  */
 export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParams): string {
   const {
@@ -36,8 +38,10 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
     exchangeDate,
     festivePoem,
     giftIdeas,
+    locale = 'en',
   } = params;
 
+  const isRu = locale === 'ru';
   const fullReceiverName = `${receiverName} ${receiverSurname}`.trim();
   const formattedPoem = festivePoem
     ? festivePoem
@@ -60,12 +64,52 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
           .join('')
       : '';
 
+  const subjectTitle = isRu
+    ? `🎅 Ваш подопечный в Тайном Санте для ${escapeHtml(sessionTitle)}`
+    : `🎅 Your Secret Santa Match for ${escapeHtml(sessionTitle)}`;
+
+  const headerTitle = isRu ? 'Жеребьёвка Тайного Санты!' : 'Secret Santa Match Reveal!';
+
+  const greetingText = isRu
+    ? `Хо-хо-хо, <strong>${escapeHtml(giverName)}</strong>! 🎄<br />Праздничные эльфы завершили жеребьёвку, и твоё секретное задание готово!`
+    : `Ho Ho Ho, <strong>${escapeHtml(giverName)}</strong>! 🎄<br />The holiday elves have worked their magic, and your Secret Santa assignment is officially in!`;
+
+  const badgeText = isRu ? 'ТЫ ТАЙНЫЙ САНТА ДЛЯ' : 'YOU ARE THE SECRET SANTA FOR';
+
+  const budgetLabel = isRu ? '💰 Лимит бюджета' : '💰 Budget Limit';
+  const budgetVal = escapeHtml(budget?.trim() || (isRu ? 'Не указан' : 'No limit specified'));
+
+  const dateLabel = isRu ? '📅 Дата обмена' : '📅 Exchange Date';
+  const dateVal = escapeHtml(exchangeDate?.trim() || (isRu ? 'Будет объявлена' : 'To be announced'));
+
+  const prefTitle = isRu
+    ? `🎯 Предпочтения ${escapeHtml(receiverName)}`
+    : `🎯 ${escapeHtml(receiverName)}'s Preferences`;
+
+  const wishlistLabel = isRu ? '📝 Список желаний:' : '📝 Wishlist:';
+  const hobbiesLabel = isRu ? '🎨 Увлечения:' : '🎨 Hobbies:';
+
+  const poemTitle = isRu ? '📜 Новогодний стих от Санты' : "📜 Santa's Festive Rhyme";
+  const ideasTitle = isRu ? '💡 Идеи подарков' : '💡 Curated Gift Inspiration';
+
+  const ruleText = isRu
+    ? '<strong>🤫 Секретное правило Санты:</strong> Сохраняй своего подопечного в строжайшей тайне до дня обмена подарками! Не выдавай секрет заранее.'
+    : '<strong>🤫 Top Secret Santa Rule:</strong> Keep your recipient a secret until gift exchange day! Do not reveal or spoil the surprise.';
+
+  const footerText1 = isRu
+    ? 'Тайный Санта • Дарите праздничное настроение 🎄'
+    : 'Secret Santa • Spread the Holiday Cheer 🎄';
+
+  const footerText2 = isRu
+    ? `Вы получили это письмо, потому что участвуете в «${escapeHtml(sessionTitle)}».`
+    : `You received this email because you are participating in <em>${escapeHtml(sessionTitle)}</em>.`;
+
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${isRu ? 'ru' : 'en'}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎅 Your Secret Santa Match for ${escapeHtml(sessionTitle)}</title>
+  <title>${subjectTitle}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0b1329; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
   <!-- Outer Table Wrapper -->
@@ -82,7 +126,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
                 ✨ ❄️ 🎅 🎄 ❄️ ✨
               </div>
               <h1 style="margin: 0 0 6px 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                Secret Santa Match Reveal!
+                ${headerTitle}
               </h1>
               <p style="margin: 0; font-size: 15px; color: #fecaca; font-weight: 500;">
                 ${escapeHtml(sessionTitle)}
@@ -96,8 +140,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
               
               <!-- Greeting -->
               <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.5; color: #334155;">
-                Ho Ho Ho, <strong>${escapeHtml(giverName)}</strong>! 🎄<br />
-                The holiday elves have worked their magic, and your Secret Santa assignment is officially in!
+                ${greetingText}
               </p>
 
               <!-- Big Reveal Card -->
@@ -105,7 +148,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
                 <tr>
                   <td style="padding: 24px 16px;">
                     <span style="display: inline-block; background-color: #dc2626; color: #ffffff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 12px; border-radius: 9999px; margin-bottom: 10px;">
-                      YOU ARE THE SECRET SANTA FOR
+                      ${badgeText}
                     </span>
                     <h2 style="margin: 6px 0 0 0; font-size: 28px; font-weight: 900; color: #991b1b; letter-spacing: -0.5px;">
                       🎁 ${escapeHtml(fullReceiverName)} 🎁
@@ -119,18 +162,18 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
                 <tr>
                   <td width="50%" style="padding: 14px 16px; border-right: 1px solid #e2e8f0; vertical-align: top;">
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; margin-bottom: 4px;">
-                      💰 Budget Limit
+                      ${budgetLabel}
                     </div>
                     <div style="font-size: 16px; font-weight: 700; color: #0f172a;">
-                      ${escapeHtml(budget?.trim() || 'No limit specified')}
+                      ${budgetVal}
                     </div>
                   </td>
                   <td width="50%" style="padding: 14px 16px; vertical-align: top;">
                     <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; margin-bottom: 4px;">
-                      📅 Exchange Date
+                      ${dateLabel}
                     </div>
                     <div style="font-size: 16px; font-weight: 700; color: #0f172a;">
-                      ${escapeHtml(exchangeDate?.trim() || 'To be announced')}
+                      ${dateVal}
                     </div>
                   </td>
                 </tr>
@@ -144,19 +187,19 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
                 <tr>
                   <td style="padding: 16px;">
                     <div style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: #166534; letter-spacing: 0.5px; margin-bottom: 8px;">
-                      🎯 ${escapeHtml(receiverName)}'s Preferences
+                      ${prefTitle}
                     </div>
                     ${
                       receiverWishlist
                         ? `<p style="margin: 0 0 6px 0; font-size: 14px; line-height: 1.5; color: #14532d;">
-                            <strong>📝 Wishlist:</strong> ${escapeHtml(receiverWishlist)}
+                            <strong>${wishlistLabel}</strong> ${escapeHtml(receiverWishlist)}
                           </p>`
                         : ''
                     }
                     ${
                       receiverHobbies
                         ? `<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #14532d;">
-                            <strong>🎨 Hobbies:</strong> ${escapeHtml(receiverHobbies)}
+                            <strong>${hobbiesLabel}</strong> ${escapeHtml(receiverHobbies)}
                           </p>`
                         : ''
                     }
@@ -174,7 +217,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
                 <tr>
                   <td style="padding: 18px 20px; text-align: center;">
                     <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #b45309; letter-spacing: 1px; margin-bottom: 8px;">
-                      📜 Santa's Festive Rhyme
+                      ${poemTitle}
                     </div>
                     <blockquote style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 15px; line-height: 1.7; color: #78350f;">
                       ${formattedPoem}
@@ -193,7 +236,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
                 <tr>
                   <td style="padding: 18px 20px;">
                     <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #334155; letter-spacing: 1px; margin-bottom: 12px;">
-                      💡 Curated Gift Inspiration
+                      ${ideasTitle}
                     </div>
                     <ul style="margin: 0; padding-left: 0; list-style: none;">
                       ${giftItemsHtml}
@@ -209,7 +252,7 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
                 <tr>
                   <td style="padding: 14px 16px;">
                     <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #991b1b;">
-                      <strong>🤫 Top Secret Santa Rule:</strong> Keep your recipient a secret until gift exchange day! Do not reveal or spoil the surprise.
+                      ${ruleText}
                     </p>
                   </td>
                 </tr>
@@ -222,10 +265,10 @@ export function buildSecretSantaEmailHtml(params: SendSecretSantaMatchEmailParam
           <tr>
             <td style="background-color: #0f172a; padding: 24px; text-align: center; color: #94a3b8; font-size: 12px; line-height: 1.6;">
               <p style="margin: 0 0 6px 0; color: #e2e8f0; font-weight: 600; font-size: 13px;">
-                Secret Santa • Spread the Holiday Cheer 🎄
+                ${footerText1}
               </p>
               <p style="margin: 0; color: #64748b;">
-                You received this email because you are participating in <em>${escapeHtml(sessionTitle)}</em>.
+                ${footerText2}
               </p>
             </td>
           </tr>
@@ -253,38 +296,47 @@ export function buildSecretSantaPlainText(params: SendSecretSantaMatchEmailParam
     exchangeDate,
     festivePoem,
     giftIdeas,
+    locale = 'en',
   } = params;
 
+  const isRu = locale === 'ru';
   const fullReceiverName = `${receiverName} ${receiverSurname}`.trim();
 
-  let text = `🎅 SECRET SANTA MATCH REVEAL: ${sessionTitle}\n\n`;
-  text += `Ho Ho Ho, ${giverName}!\n\n`;
-  text += `🎁 YOU ARE THE SECRET SANTA FOR: ${fullReceiverName}\n\n`;
+  let text = isRu
+    ? `🎅 ИТОГИ ЖЕРЕБЬЁВКИ ТАЙНОГО САНТЫ: ${sessionTitle}\n\nХо-хо-хо, ${giverName}!\n\n🎁 ВЫ ТАЙНЫЙ САНТА ДЛЯ: ${fullReceiverName}\n\n`
+    : `🎅 SECRET SANTA MATCH REVEAL: ${sessionTitle}\n\nHo Ho Ho, ${giverName}!\n\n🎁 YOU ARE THE SECRET SANTA FOR: ${fullReceiverName}\n\n`;
+
   text += `--------------------------------------------------\n`;
-  text += `💰 Budget:        ${budget?.trim() || 'Not specified'}\n`;
-  text += `📅 Exchange Date: ${exchangeDate?.trim() || 'To be announced'}\n`;
+  text += isRu
+    ? `💰 Бюджет:        ${budget?.trim() || 'Не указан'}\n📅 Дата обмена:  ${exchangeDate?.trim() || 'Будет объявлена'}\n`
+    : `💰 Budget:        ${budget?.trim() || 'Not specified'}\n📅 Exchange Date: ${exchangeDate?.trim() || 'To be announced'}\n`;
   text += `--------------------------------------------------\n\n`;
 
   if (receiverWishlist || receiverHobbies) {
-    text += `🎯 ${receiverName}'s Preferences:\n`;
-    if (receiverWishlist) text += `• Wishlist: ${receiverWishlist}\n`;
-    if (receiverHobbies) text += `• Hobbies:  ${receiverHobbies}\n`;
+    text += isRu ? `🎯 Предпочтения ${receiverName}:\n` : `🎯 ${receiverName}'s Preferences:\n`;
+    if (receiverWishlist) text += isRu ? `• Список желаний: ${receiverWishlist}\n` : `• Wishlist: ${receiverWishlist}\n`;
+    if (receiverHobbies) text += isRu ? `• Хобби:          ${receiverHobbies}\n` : `• Hobbies:  ${receiverHobbies}\n`;
     text += `\n`;
   }
 
   if (festivePoem) {
-    text += `📜 Santa's Festive Rhyme:\n${festivePoem}\n\n`;
+    text += isRu
+      ? `📜 Новогодний стих от Санты:\n${festivePoem}\n\n`
+      : `📜 Santa's Festive Rhyme:\n${festivePoem}\n\n`;
   }
 
   if (giftIdeas && giftIdeas.length > 0) {
-    text += `💡 Curated Gift Inspiration:\n`;
+    text += isRu ? `💡 Идеи подарков:\n` : `💡 Curated Gift Inspiration:\n`;
     giftIdeas.forEach((idea) => {
       text += `• ${idea}\n`;
     });
     text += `\n`;
   }
 
-  text += `🤫 Top Secret Santa Rule: Keep it a secret until gift exchange day! 🎄\n`;
+  text += isRu
+    ? `🤫 Секретное правило Санты: Сохраняйте в тайне до дня обмена подарками! 🎄\n`
+    : `🤫 Top Secret Santa Rule: Keep it a secret until gift exchange day! 🎄\n`;
+
   return text;
 }
 
@@ -319,28 +371,26 @@ function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject
 
   const wrapText = (text: string, maxLen: number): string[] => {
     const words = text.split(' ');
-    const result: string[] = [];
+    const lines: string[] = [];
     let current = '';
 
-    for (const word of words) {
-      if (!current) {
-        current = word;
-      } else if (current.length + 1 + word.length <= maxLen) {
-        current += ' ' + word;
+    for (const w of words) {
+      if ((current + ' ' + w).trim().length <= maxLen) {
+        current = (current + ' ' + w).trim();
       } else {
-        result.push(current);
-        current = word;
+        if (current) lines.push(current);
+        current = w;
       }
     }
-    if (current) result.push(current);
-    return result.length > 0 ? result : [text];
+    if (current) lines.push(current);
+    return lines;
   };
 
-  const addWrapped = (prefix: string, content: string): void => {
-    const maxContentLen = innerWidth - prefix.length;
-    const wrapped = wrapText(content, Math.max(maxContentLen, 20));
-    wrapped.forEach((line, idx) => {
-      if (idx === 0) {
+  const addWrapped = (prefix: string, text: string) => {
+    const available = innerWidth - prefix.length;
+    const wrapped = wrapText(text, available);
+    wrapped.forEach((line, i) => {
+      if (i === 0) {
         lines.push(padLine(`${prefix}${line}`));
       } else {
         lines.push(padLine(`${' '.repeat(prefix.length)}${line}`));
@@ -348,58 +398,55 @@ function logMockHolidayDispatch(params: SendSecretSantaMatchEmailParams, subject
     });
   };
 
-  const hr = '├' + '─'.repeat(width - 2) + '┤';
-  const top = '┌' + '─'.repeat(width - 2) + '┐';
-  const bot = '└' + '─'.repeat(width - 2) + '┘';
-
   const lines: string[] = [
-    top,
-    padLine('🎅 SECRET SANTA DISPATCH (SIMULATED / MOCK)'),
-    hr,
+    '',
+    `┌${'─'.repeat(width - 2)}┐`,
+    `│ 🎅 SECRET SANTA DISPATCH (SIMULATED / MOCK)                            │`,
+    `├${'─'.repeat(width - 2)}┤`,
     padLine(`To:        ${giverEmail} (${giverName})`),
     padLine(`Session:   ${sessionTitle}`),
     padLine(`Subject:   ${subject}`),
-    hr,
+    `├${'─'.repeat(width - 2)}┤`,
     padLine(`🎁 RECIPIENT:  ${fullReceiverName}`),
     padLine(`💰 BUDGET:     ${budget?.trim() || 'Not specified'}`),
     padLine(`📅 EXCHANGE:   ${exchangeDate?.trim() || 'To be announced'}`),
+    padLine(''),
   ];
 
   if (receiverWishlist || receiverHobbies) {
-    lines.push(padLine(''));
     lines.push(padLine(`🎯 RECIPIENT PREFERENCES:`));
     if (receiverWishlist) addWrapped('• Wishlist:    ', receiverWishlist);
     if (receiverHobbies) addWrapped('• Hobbies:     ', receiverHobbies);
+    lines.push(padLine(''));
   }
 
   if (festivePoem) {
-    lines.push(padLine(''));
     lines.push(padLine(`📜 SANTA'S FESTIVE RHYME:`));
-    for (const poemLine of festivePoem.split('\n')) {
-      if (poemLine.trim()) {
+    festivePoem
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean)
+      .forEach((poemLine) => {
         addWrapped('  ', `"${poemLine.trim()}"`);
-      }
-    }
+      });
+    lines.push(padLine(''));
   }
 
   if (giftIdeas && giftIdeas.length > 0) {
-    lines.push(padLine(''));
     lines.push(padLine(`💡 AI GIFT INSPIRATION:`));
-    for (const idea of giftIdeas) {
+    giftIdeas.forEach((idea) => {
       addWrapped('🎁 ', idea);
-    }
+    });
+    lines.push(padLine(''));
   }
 
-  lines.push(padLine(''));
-  lines.push(padLine('🤫 RULE: Keep it a secret until exchange day! 🎄'));
-  lines.push(bot);
+  lines.push(padLine(`🤫 RULE: Keep it a secret until exchange day! 🎄`));
+  lines.push(`└${'─'.repeat(width - 2)}┘`);
+  lines.push('');
 
-  console.log('\n' + lines.join('\n') + '\n');
+  console.log(lines.join('\n'));
 }
 
-/**
- * Escapes HTML characters for safe template rendering.
- */
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
@@ -416,7 +463,11 @@ function escapeHtml(str: string): string {
 export async function sendSecretSantaMatchEmail(
   params: SendSecretSantaMatchEmailParams
 ): Promise<SendEmailResult> {
-  const subject = `🎅 Your Secret Santa Match for ${params.sessionTitle}!`;
+  const isRu = params.locale === 'ru';
+  const subject = isRu
+    ? `🎅 Ваш подопечный в Тайном Санте для ${params.sessionTitle}!`
+    : `🎅 Your Secret Santa Match for ${params.sessionTitle}!`;
+
   const resendApiKey = process.env.RESEND_API_KEY?.trim();
 
   // If Resend API Key is present, attempt real dispatch

@@ -9,7 +9,7 @@ import {
   Unlock,
   Key,
   Calendar,
-  DollarSign,
+  Euro,
   Users,
   Copy,
   Check,
@@ -21,6 +21,8 @@ import {
   Clock,
   ChevronRight,
   RefreshCw,
+  ArrowLeft,
+  Trash2,
 } from 'lucide-react';
 import { getApiPath, getBasePath } from '@/lib/api-helper';
 import { useLanguage } from '@/lib/i18n';
@@ -211,7 +213,7 @@ export default function SessionPage({
       const res = await fetch(getApiPath(`/api/sessions/${sessionId}/draw`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adminKey: adminKey.trim() }),
+        body: JSON.stringify({ adminKey: adminKey.trim(), locale }),
       });
 
       const data = await res.json();
@@ -241,6 +243,59 @@ export default function SessionPage({
       setDrawError((err as Error).message || 'Could not trigger draw');
     } finally {
       setIsDrawing(false);
+    }
+  };
+
+  // Handle deleting a participant (host admin only)
+  const handleDeleteParticipant = async (participantId: string, participantName: string) => {
+    let keyToUse = adminKey.trim();
+    if (!keyToUse) {
+      const prompted = window.prompt(t('session.enterAdminKeyToManage'));
+      if (!prompted || !prompted.trim()) return;
+      keyToUse = prompted.trim();
+      setAdminKey(keyToUse);
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`santa_admin_${sessionId}`, keyToUse);
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    const confirmMsg = t('session.confirmRemoveParticipant', { name: participantName });
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      const res = await fetch(
+        getApiPath(`/api/sessions/${sessionId}/participants/${participantId}`),
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-key': keyToUse,
+          },
+          body: JSON.stringify({ adminKey: keyToUse }),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to remove participant');
+      }
+
+      // Optimistically update session participants
+      setSession((prev) =>
+        prev
+          ? {
+              ...prev,
+              participants: (prev.participants || []).filter((p) => p.id !== participantId),
+            }
+          : null
+      );
+      await fetchSession();
+    } catch (err: unknown) {
+      alert((err as Error).message || 'Failed to remove participant');
     }
   };
 
@@ -361,6 +416,17 @@ export default function SessionPage({
       {/* Top Center Language Switcher */}
       <LanguageSwitch />
 
+      {/* Return to Main Page Button */}
+      <div className="flex items-center justify-start pt-1">
+        <Link
+          href="/"
+          className="inline-flex items-center space-x-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-300 hover:border-slate-400 px-4 py-2 rounded-full shadow-xs transition active:scale-95"
+        >
+          <ArrowLeft className="w-4 h-4 text-slate-500" />
+          <span>{t('session.backHome')}</span>
+        </Link>
+      </div>
+
       {/* Session Header Card */}
       <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
@@ -396,7 +462,7 @@ export default function SessionPage({
             <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-700 pt-1">
               {session.budget && (
                 <div className="flex items-center space-x-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-                  <DollarSign className="w-4 h-4 text-blue-600" />
+                  <Euro className="w-4 h-4 text-blue-600" />
                   <span>{t('session.budget')} <strong className="text-slate-900">{session.budget}</strong></span>
                 </div>
               )}
@@ -709,7 +775,21 @@ export default function SessionPage({
                       </p>
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Ready 🎁</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      {locale === 'ru' ? 'Готов 🎁' : 'Ready 🎁'}
+                    </span>
+                    {!isLocked && (
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteParticipant(p.id, `${p.name} ${p.surname}`)}
+                        title={t('session.removeParticipant')}
+                        className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))
             )}

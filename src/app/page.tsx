@@ -11,7 +11,7 @@ import {
   ArrowRight,
   Lock,
   Calendar,
-  DollarSign,
+  Euro,
   Key,
   Info,
 } from 'lucide-react';
@@ -358,7 +358,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center space-x-1">
-                  <DollarSign className="w-3.5 h-3.5 text-blue-600" />
+                  <Euro className="w-3.5 h-3.5 text-blue-600" />
                   <span>{t('create.budgetLabel')}</span>
                 </label>
                 <input
