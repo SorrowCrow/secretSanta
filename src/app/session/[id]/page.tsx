@@ -23,6 +23,7 @@ import {
   RefreshCw,
   ArrowLeft,
   Trash2,
+  Info,
 } from 'lucide-react';
 import { getApiPath, getBasePath } from '@/lib/api-helper';
 import { useLanguage } from '@/lib/i18n';
@@ -80,6 +81,7 @@ export default function SessionPage({
 
   // UI state
   const [copiedLink, setCopiedLink] = useState(false);
+  const [showAiInfo, setShowAiInfo] = useState(false);
 
   // Fetch session data
   const fetchSession = useCallback(async () => {
@@ -609,7 +611,7 @@ export default function SessionPage({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder={t('session.firstNamePlaceholder')}
-                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
+                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
                   />
                 </div>
 
@@ -623,7 +625,7 @@ export default function SessionPage({
                     value={surname}
                     onChange={(e) => setSurname(e.target.value)}
                     placeholder={t('session.lastNamePlaceholder')}
-                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
+                    className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
                   />
                 </div>
               </div>
@@ -642,7 +644,7 @@ export default function SessionPage({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={t('session.emailPlaceholder')}
-                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
+                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
                 />
                 <p className="text-[11px] text-slate-500 mt-1">
                   {t('session.emailPrivacyHint')}
@@ -650,19 +652,52 @@ export default function SessionPage({
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 flex items-center justify-between">
-                  <span>{t('session.wishlist')}</span>
-                  <span className="text-[10px] text-blue-700 font-bold flex items-center space-x-1">
-                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                    {t('session.wishlist')}
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowAiInfo((prev) => !prev)}
+                    title={t('session.aiInfoDesc')}
+                    className="group text-[10px] text-blue-700 hover:text-blue-900 font-bold flex items-center space-x-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2 py-0.5 rounded-full transition cursor-pointer select-none active:scale-95"
+                  >
+                    <Sparkles className="w-3 h-3 text-blue-600 group-hover:rotate-12 transition-transform" />
                     <span>{t('session.wishlistAiBadge')}</span>
-                  </span>
-                </label>
+                    <Info className="w-3 h-3 text-blue-500 ml-0.5" />
+                  </button>
+                </div>
+
+                {showAiInfo && (
+                  <div className="mb-2.5 p-3 rounded-xl bg-blue-50/95 border border-blue-200 text-xs text-blue-950 animate-fadeIn relative shadow-xs">
+                    <div className="flex items-start space-x-2">
+                      <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-blue-900 mb-0.5 text-xs">
+                          {t('session.aiInfoTitle')}
+                        </p>
+                        <p className="text-[11px] leading-relaxed text-blue-800">
+                          {t('session.aiInfoDesc')}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAiInfo(false)}
+                        className="text-blue-400 hover:text-blue-700 p-0.5 -mr-1 cursor-pointer font-bold"
+                        title="Close"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <textarea
                   rows={2}
                   value={wishlist}
                   onChange={(e) => setWishlist(e.target.value)}
                   placeholder={t('session.wishlistPlaceholder')}
-                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600 resize-none"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 resize-none box-border"
                 />
               </div>
 
@@ -675,7 +710,7 @@ export default function SessionPage({
                   value={hobbies}
                   onChange={(e) => setHobbies(e.target.value)}
                   placeholder={t('session.hobbiesPlaceholder')}
-                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-red-600"
+                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
                 />
                 <p className="text-[11px] text-slate-500 mt-1">
                   {t('session.hobbiesHint')}
@@ -857,7 +892,7 @@ export default function SessionPage({
                   value={adminKey}
                   onChange={(e) => setAdminKey(e.target.value)}
                   placeholder={t('session.hostKeyPlaceholder')}
-                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 font-mono text-xs sm:text-sm focus:outline-none focus:border-red-600"
+                  className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 font-mono text-base sm:text-sm focus:outline-none focus:border-red-600 box-border"
                 />
                 <p className="text-[11px] text-slate-500 mt-1">
                   {t('session.hostKeyHint')}

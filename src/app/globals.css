@@ -93,13 +93,26 @@ body {
   background: #94a3b8;
 }
 
-/* Ensure native date inputs have consistent height and alignment on Safari / iOS */
+/* Prevent iOS Safari auto-zoom by ensuring minimum 16px font-size on mobile inputs */
+@media screen and (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Ensure native date inputs have consistent height and vertical center alignment on Safari / iOS */
+input[type="date"] {
+  display: flex;
+  align-items: center;
+}
+
 input[type="date"]::-webkit-date-and-time-value {
   min-height: 1.5em;
-  height: 1.5em;
   width: 100%;
   text-align: left;
-  margin: 0;
+  margin: auto 0;
   display: flex;
   align-items: center;
 }

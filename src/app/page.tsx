@@ -437,7 +437,7 @@ export default function HomePage() {
                         e.currentTarget.showPicker();
                       } catch {}
                     }}
-                    className="w-full h-full max-w-full min-w-0 block pr-10 pl-3.5 sm:pl-4 bg-transparent border-0 text-slate-900 placeholder-slate-400 focus:outline-none text-base sm:text-sm transition cursor-pointer box-border appearance-none [-webkit-appearance:none] [color-scheme:light] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:m-0 [&::-webkit-date-and-time-value]:h-[1.5em] [&::-webkit-date-and-time-value]:min-h-[1.5em] [&::-webkit-date-and-time-value]:w-full [&::-webkit-date-and-time-value]:flex [&::-webkit-date-and-time-value]:items-center"
+                    className="w-full h-full max-w-full min-w-0 flex items-center pr-10 pl-3.5 sm:pl-4 py-3 sm:py-3.5 bg-transparent border-0 text-slate-900 placeholder-slate-400 focus:outline-none text-base sm:text-sm transition cursor-pointer box-border appearance-none [-webkit-appearance:none] [color-scheme:light] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-date-and-time-value]:text-left [&::-webkit-date-and-time-value]:my-auto [&::-webkit-date-and-time-value]:w-full [&::-webkit-date-and-time-value]:flex [&::-webkit-date-and-time-value]:items-center"
                   />
                   <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                     <Calendar className="w-4 h-4 text-slate-400" />
@@ -485,7 +485,7 @@ export default function HomePage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder={t('create.passwordPlaceholder')}
-                      className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 text-sm"
+                      className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 text-base sm:text-sm box-border"
                     />
                     <p className="text-[11px] text-slate-500 mt-1">
                       {t('create.passwordHint')}
@@ -502,7 +502,7 @@ export default function HomePage() {
                       value={customAdminKey}
                       onChange={(e) => setCustomAdminKey(e.target.value)}
                       placeholder={t('create.adminKeyPlaceholder')}
-                      className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-sm font-mono"
+                      className="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-600 text-base sm:text-sm font-mono box-border"
                     />
                     <p className="text-[11px] text-slate-500 mt-1">
                       {t('create.adminKeyHint')}
@@ -559,7 +559,7 @@ export default function HomePage() {
                   value={lookupInput}
                   onChange={(e) => setLookupInput(e.target.value)}
                   placeholder={t('quickJoin.placeholder')}
-                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 text-sm transition"
+                  className="w-full px-4 py-3.5 rounded-xl bg-white border-2 border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 text-base sm:text-sm transition box-border"
                 />
               </div>
 
